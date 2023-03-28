@@ -2,9 +2,9 @@
 #include <stdlib.h>
 
 typedef struct sNodo {
-   int dado;
-   struct sNodo* next;
-   struct sNodo* prev;
+    int dado;
+    struct sNodo* next;
+    struct sNodo* prev;
 } Nodo;
 
 typedef struct sLista {
@@ -24,7 +24,7 @@ Nodo* removeElementoLista(Lista*, Nodo*); // ok
 Lista* criaLista(); // ok 
 Nodo* buscaLista(Lista*, int);
 
-int main(){
+int main() {
     Lista* lista1;
 
     //lista1 = alocaMemoriaLista(lista1);
@@ -45,15 +45,15 @@ int main(){
 }
 
 //implementação
-void liberaMemoriaNodo(Nodo* no){
+void liberaMemoriaNodo(Nodo* no) {
     free(no);
 }
 
-Nodo* alocaMemoriaNodo(){
-    return (Nodo*) malloc(sizeof(Nodo));
+Nodo* alocaMemoriaNodo() {
+    return (Nodo*)malloc(sizeof(Nodo));
 }
 
-Nodo* criaNodo(int dado){
+Nodo* criaNodo(int dado) {
     Nodo* no = alocaMemoriaNodo();
     if (no != NULL)
     {
@@ -64,11 +64,11 @@ Nodo* criaNodo(int dado){
     return no;
 }
 
-Lista* alocaMemoriaLista(Lista* lista){
-    return (Lista*) malloc(sizeof(Lista));
+Lista* alocaMemoriaLista(Lista* lista) {
+    return (Lista*)malloc(sizeof(Lista));
 }
 
-void percorreListaHeadTail(Lista* lista){
+void percorreListaHeadTail(Lista* lista) {
     Nodo* no = lista->head;
 
     while (no != NULL)
@@ -77,7 +77,7 @@ void percorreListaHeadTail(Lista* lista){
         no = no->next;
     }
 }
-void percorreListaTailHead(Lista* lista){
+void percorreListaTailHead(Lista* lista) {
     Nodo* no = lista->tail;
 
     while (no != NULL)
@@ -87,25 +87,27 @@ void percorreListaTailHead(Lista* lista){
     }
 }
 
-int insereElementoLista(Lista* lista, Nodo* pivo, int dado){
+int insereElementoLista(Lista* lista, Nodo* pivo, int dado) {
     Nodo* novo = criaNodo(dado);
-    if (novo == NULL){
+    if (novo == NULL) {
         return -1; //retorna -1 quando não for possível alocar memória
     }
     if ((pivo == NULL) && (lista->size != 0))
     {
         return -2;
     }
-    if (lista->size == 0){
+    if (lista->size == 0) {
         lista->head = novo;
         lista->tail = novo;
-    } else{
+    }
+    else {
         novo->next = pivo->next;
         novo->prev = pivo;
 
-        if(pivo->next == NULL){
+        if (pivo->next == NULL) {
             lista->tail = novo;
-        }else{
+        }
+        else {
             pivo->next->prev = novo;
         }
         pivo->next = novo;
@@ -113,26 +115,29 @@ int insereElementoLista(Lista* lista, Nodo* pivo, int dado){
     lista->size++;
 }
 
-Nodo* removeElementoLista(Lista* lista, Nodo* elemento){
+Nodo* removeElementoLista(Lista* lista, Nodo* elemento) {
     if ((elemento != NULL) && (lista->size != 0))
     {
         if (elemento == lista->head)
         {
             lista->head = elemento->next;
-            if (lista->head == NULL){
+            if (lista->head == NULL) {
                 lista->tail = NULL;
-            }else
+            }
+            else
             {
                 elemento->next->prev = NULL;
             }
-            
-        }else
+
+        }
+        else
         {
             elemento->prev->next = elemento->next;
-            if (elemento ->next == NULL)
+            if (elemento->next == NULL)
             {
                 lista->tail = elemento->prev;
-            }else
+            }
+            else
             {
                 elemento->next->prev = elemento->prev;
             }
@@ -141,7 +146,7 @@ Nodo* removeElementoLista(Lista* lista, Nodo* elemento){
         lista->size--;
     }
 }
-Lista* criaLista(){ 
+Lista* criaLista() {
     Lista* lista = alocaMemoriaLista(lista);
     if (lista != NULL)
     {
@@ -149,16 +154,16 @@ Lista* criaLista(){
         lista->tail = NULL;
         lista->size = 0;
     }
-        return lista;
+    return lista;
 }
-Nodo* buscaLista(Lista* lista, int dado){
-    Nodo* no = lista->head;
+Nodo* buscaLista(Lista* lista, int dado) {
+    /*Nodo* no = lista->head;
 
-    while (no != NULL){
-        if (no->dado == dado){
-            printf("%d\t", no);
+     while (no != NULL) {
+        if (no->dado == dado) {
+            printf("%d\t", &no);
             return no;
         }
         no = no->next;
-    }
+    }*/
 }
