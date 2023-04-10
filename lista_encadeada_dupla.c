@@ -157,13 +157,13 @@ Lista* criaLista() {
     return lista;
 }
 Nodo* buscaLista(Lista* lista, int dado) {
-    /*Nodo* no = lista->head;
+    Nodo* no = lista->head;
 
-     while (no != NULL) {
+    while (no != NULL) {
         if (no->dado == dado) {
             printf("%d\t", &no);
             return no;
         }
         no = no->next;
-    }*/
+    }
 }
