@@ -17,6 +17,7 @@ typedef struct sFila {
     char nomeFila[20];
 } Fila;
 
+//protótipos
 void liberaMemoriaNodo(Nodo*);
 Nodo* alocaMemoriaNodo();
 Nodo* criaNodo(int dado);
@@ -28,15 +29,14 @@ Nodo* removeElementoFila(Fila*);
 Fila* criaFila();
 Nodo* buscaFila(Fila*, int);
 bool filaVazia(Fila*);
-void testFila();
+void testeFila();
 
 int main() {
 
     int opcao = 0, dado = 0;
     Fila* fila;
-    //testFila();
 
-    while (opcao != 6)
+    while (opcao != 7)
     {
         printf("\n\n");
         printf("Digite uma das opções abaixo:\n");
@@ -103,7 +103,7 @@ int main() {
             opcao = 0;
             break;
         case 6:
-            testFila();
+            testeFila();
             opcao = 0;
             break;
         case 7:
@@ -202,6 +202,7 @@ Nodo* removeElementoFila(Fila* fila) {
     fila->size--;
     return removido;
 }
+
 Fila* criaFila() {
     Fila* fila = alocaMemoriaFila();
     if (fila != NULL)
@@ -227,16 +228,14 @@ Nodo* buscaFila(Fila* fila, int dado) {
 bool filaVazia(Fila* fila) {
     return (fila->size == 0);
 }
-void testFila() {
+void testeFila() {
     Fila* fila = criaFila();
     strcpy(fila->nomeFila, "TesteFila");
 
-    // Teste: inserção de elementos
     insereElementoFila(fila, 1);
     insereElementoFila(fila, 2);
     insereElementoFila(fila, 3);
 
-    // Verificar se os elementos foram inseridos corretamente
     if (fila->front->dado != 1 || fila->rear->dado != 3 || fila->size != 3) {
         printf("Erro: Inserção de elementos falhou.\n");
     }
@@ -244,29 +243,24 @@ void testFila() {
         printf("Inserção de elementos passou no teste.\n");
     }
 
-    // Teste: remoção de elementos
-    Nodo* removedNode = removeElementoFila(fila);
+    Nodo* removido = removeElementoFila(fila);
 
-    // Verificar se o elemento removido é o correto e se a fila foi atualizada corretamente
-    if (removedNode == NULL || removedNode->dado != 1 || fila->front->dado != 2 || fila->size != 2) {
+    if (removido == NULL || removido->dado != 1 || fila->front->dado != 2 || fila->size != 2) {
         printf("Erro: Remoção de elementos falhou.\n");
     }
     else {
         printf("Remoção de elementos passou no teste.\n");
     }
 
-    // Teste: busca de elementos
-    Nodo* foundNode = buscaFila(fila, 2);
+    Nodo* procurado = buscaFila(fila, 2);
 
-    // Verificar se o elemento buscado é o correto
-    if (foundNode == NULL || foundNode->dado != 2) {
+    if (procurado == NULL || procurado->dado != 2) {
         printf("Erro: Busca de elementos falhou.\n");
     }
     else {
         printf("Busca de elementos passou no teste.\n");
     }
 
-    // Teste: fila vazia
     removeElementoFila(fila);
     removeElementoFila(fila);
 
