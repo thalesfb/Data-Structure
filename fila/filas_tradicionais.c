@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+//#include "lista/lista_encadeada_dupla.c"
 //#include <inttypes.h>
 
 typedef struct sNodo {
@@ -14,7 +15,6 @@ typedef struct sFila {
     struct sNodo* front;
     struct sNodo* rear;
     int size;
-    char nomeFila[20];
 } Fila;
 
 //protótipos
@@ -31,7 +31,7 @@ Nodo* buscaFila(Fila*, int);
 bool filaVazia(Fila*);
 void testeFila();
 
-int main() {
+/* int main() {
 
     int opcao = 0, dado = 0;
     Fila* fila;
@@ -115,7 +115,7 @@ int main() {
         }
     }
     return 0;
-}
+} */
 
 //implementação
 void liberaMemoriaNodo(Nodo* no) {
@@ -143,8 +143,8 @@ Fila* alocaMemoriaFila() {
 
 void percorreFilaHeadTail(Fila* fila) {
     Nodo* no = fila->front;
-    printf("Tamanho da %s: %i \n", fila->nomeFila, fila->size);
-    printf("Fila %s: \n", fila->nomeFila);
+/*     printf("Tamanho da %s: %i \n", fila->nomeFila, fila->size);
+    printf("Fila %s: \n", fila->nomeFila); */
     while (no != NULL)
     {
         printf("%i \t", no->dado);
@@ -154,7 +154,7 @@ void percorreFilaHeadTail(Fila* fila) {
 void percorreFilaTailHead(Fila* fila) {
     Nodo* no = fila->rear;
 
-    printf("Fila %s: \n", fila->nomeFila);
+    /* printf("Fila %s: \n", fila->nomeFila); */
 
     while (no != NULL)
     {
@@ -218,7 +218,7 @@ Nodo* buscaFila(Fila* fila, int dado) {
 
     while (no != NULL) {
         if (no->dado == dado) {
-            printf("Fila %s\t dado: %d encontrado!\n", fila->nomeFila, no->dado);
+            printf("Dado: %d encontrado!\n", no->dado);
             return no;
         }
         no = no->next;
@@ -230,7 +230,7 @@ bool filaVazia(Fila* fila) {
 }
 void testeFila() {
     Fila* fila = criaFila();
-    strcpy(fila->nomeFila, "TesteFila");
+    /* strcpy(fila->nomeFila, "TesteFila"); */
 
     insereElementoFila(fila, 1);
     insereElementoFila(fila, 2);

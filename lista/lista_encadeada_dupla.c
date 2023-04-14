@@ -24,7 +24,7 @@ Nodo* removeElementoLista(Lista*, Nodo*); // ok
 Lista* criaLista(); // ok 
 Nodo* buscaLista(Lista*, int);
 
-int main() {
+/* int main() {
     Lista* lista1;
 
     //lista1 = alocaMemoriaLista(lista1);
@@ -42,7 +42,7 @@ int main() {
     percorreListaHeadTail(lista1);
     percorreListaTailHead(lista1);
     return 0;
-}
+} */
 
 //implementação
 void liberaMemoriaNodo(Nodo* no) {

@@ -3,38 +3,13 @@
 #include <stdbool.h>
 #include <string.h>
 //#include <inttypes.h>
+#include "../filas_tradicionais.h"
 
-typedef struct sNodo {
-    int placa;
-    int movimentacao;
-    struct sNodo* next;
-    struct sNodo* prev;
-} Nodo;
-
-typedef struct sFila {
-    struct sNodo* front;
-    struct sNodo* rear;
-    int size;
-    //char nomeFila[20];
-} Fila;
 
 //protótipos
-void liberaMemoriaNodo(Nodo*);
-Nodo* alocaMemoriaNodo();
-Nodo* criaNodo(int placa, int movimentacao);
-Fila* alocaMemoriaFila();
-void percorreFilaFrontToRear(Fila*);
-void percorreFilaRearToFront(Fila*);
-int insereElementoFila(Fila*, int, int);
-Nodo* removeElementoFila(Fila*);
-Fila* criaFila();
-Nodo* buscaFila(Fila*, int);
-bool filaVazia(Fila*);
-void testeFila();
-
 int partidaCarro(int, Fila*, Fila*);
 void chegadaCarro(int, Fila*, Fila*);
-Fila* movimentaCarros(Fila*);
+Fila* movimentaCarros(Fila*, int);
 
 int main() {
 
@@ -49,7 +24,8 @@ int main() {
         printf("Digite uma das opções abaixo:\n");
         printf("1 - Movimentação\n");
         printf("2 - Ver estacionamento\n");
-        printf("3 - Sair\n");
+        printf("3 - Testar o estacionamento\n");
+        printf("4 - Sair\n");
         printf("Opção: ");
         scanf("%i", &opcao);
 
@@ -66,11 +42,11 @@ int main() {
                 if (estacionamento->size == 10)
                 {
                     printf("Estacionamento cheio! Ficará no aguardo de uma vaga!");
-                    insereElementoFila(espera, placa, 0);
+                    insereElementoFila(espera, placa);
                 }
                 else
                 {
-                    insereElementoFila(estacionamento, placa, 0);
+                    insereElementoFila(estacionamento, placa);
                 }
             }
             else if (entrada == 'P' || entrada == 'p')
@@ -84,23 +60,28 @@ int main() {
             {
                 printf("Entrada inválida!");
             }
-
             opcao = 0;
             break;
         case 2:
             printf("Estacionamento: ");
-            percorreFilaFrontToRear(estacionamento);
+            percorreFilaHeadTail(estacionamento);
             printf("\n");
             printf("Fila de espera: ");
-            percorreFilaFrontToRear(espera);
+            percorreFilaHeadTail(espera);
             printf("\n");
+            opcao = 0;
             break;
         case 3:
+            testeFila();
+            opcao = 0;
+            break;
+        case 4:
             printf("Saindo...");
             exit(0);
             break;
         default:
             printf("Opção inválida!");
+            opcao = 0;
             break;
         }
     }
@@ -108,162 +89,7 @@ int main() {
 }
 
 //implementação
-void liberaMemoriaNodo(Nodo* no) {
-    free(no);
-}
 
-Nodo* alocaMemoriaNodo() {
-    return (Nodo*)malloc(sizeof(Nodo));
-}
-
-Nodo* criaNodo(int placa, int movimentacao) {
-    Nodo* no = alocaMemoriaNodo();
-    if (no != NULL)
-    {
-        no->placa = placa;
-        no->movimentacao = movimentacao;
-        no->prev = NULL;
-        no->next = NULL;
-    }
-    return no;
-}
-
-Fila* alocaMemoriaFila() {
-    return (Fila*)malloc(sizeof(Fila));
-}
-
-void percorreFilaFrontToRear(Fila* fila) {
-    Nodo* no = fila->front;
-    while (no != NULL)
-    {
-        printf("%i \t", no->placa);
-        no = no->next;
-    }
-}
-void percorreFilaRearToFront(Fila* fila) {
-    Nodo* no = fila->rear;
-
-    while (no != NULL)
-    {
-        printf("%i \t", no->placa);
-        no = no->prev;
-    }
-}
-
-int insereElementoFila(Fila* fila, int placa, int movimentacao) {
-    Nodo* novo = criaNodo(placa, movimentacao);
-
-    if (novo == NULL) {
-        return -1; //retorna -1 quando não for possível alocar memória
-    }
-    if (fila->size == 0) {
-        fila->front = novo;
-        fila->rear = novo;
-        printf("Estacionamento vazio, inserindo na extremidade norte do estacionamento!\n");
-    }
-    else {
-        novo->next = NULL;
-        novo->prev = fila->rear;
-        fila->rear->next = novo;
-        fila->rear = novo;
-        printf("Inserindo na extremidade sul do estacionamento!\n");
-    }
-    fila->size++;
-    return 0;
-}
-
-Nodo* removeElementoFila(Fila* fila) {
-    if (fila->size == 0) {
-        return NULL; //retorna NULL quando a fila estiver vazia
-    }
-
-    Nodo* removido = fila->front;
-    fila->front = fila->front->next;
-
-    if (fila->front != NULL) {
-        fila->front->prev = NULL;
-    }
-    else {
-        fila->rear = NULL;
-    }
-    fila->size--;
-    return removido;
-}
-
-Fila* criaFila() {
-    Fila* fila = alocaMemoriaFila();
-    if (fila != NULL)
-    {
-        fila->front = NULL;
-        fila->rear = NULL;
-        fila->size = 0;
-    }
-    return fila;
-}
-Nodo* buscaFila(Fila* fila, int placa) {
-    Nodo* no = fila->front;
-
-    while (no != NULL) {
-        if (no->placa == placa) {
-            printf("Placa: %d encontrada!\n", no->placa);
-            return no;
-        }
-        no = no->next;
-    }
-}
-
-bool filaVazia(Fila* fila) {
-    return (fila->size == 0);
-}
-
-void testeFila() {
-    Fila* fila = criaFila();
-    if (fila == NULL) {
-        printf("Erro: Fila não foi criada.\n");
-    }
-    else {
-        printf("Fila criada com sucesso.\n");
-    }
-
-    insereElementoFila(fila, 1, 0);
-    insereElementoFila(fila, 2, 0);
-    insereElementoFila(fila, 3, 0);
-
-    if (fila->front->placa != 1 || fila->rear->placa != 3 || fila->size != 3) {
-        printf("Erro: Inserção de elementos falhou.\n");
-    }
-    else {
-        printf("Inserção de elementos passou no teste.\n");
-    }
-
-    Nodo* removido = removeElementoFila(fila);
-
-    if (removido == NULL || removido->placa != 1 || fila->front->placa != 2 || fila->size != 2) {
-        printf("Erro: Remoção de elementos falhou.\n");
-    }
-    else {
-        printf("Remoção de elementos passou no teste.\n");
-    }
-
-    Nodo* procurado = buscaFila(fila, 2);
-
-    if (procurado == NULL || procurado->placa != 2) {
-        printf("Erro: Busca de elementos falhou.\n");
-    }
-    else {
-        printf("Busca de elementos passou no teste.\n");
-    }
-
-    removeElementoFila(fila);
-    removeElementoFila(fila);
-
-    if (!filaVazia(fila)) {
-        printf("Erro: Verificação de fila vazia falhou.\n");
-    }
-    else {
-        printf("Verificação de fila vazia passou no teste.\n");
-    }
-}
 
 int partidaCarro(int placa, Fila* estacionamento, Fila* espera) {
 
@@ -281,14 +107,14 @@ int partidaCarro(int placa, Fila* estacionamento, Fila* espera) {
     }
     else {
         Nodo* removido = removeElementoFila(estacionamento);
-        printf("Carro com placa %d removido do estacionamento. Número de movimentações: %d\n", removido->placa, removido->movimentacao);
-        estacionamento = movimentaCarros(estacionamento);
+        printf("Carro com placa %d removido do estacionamento. Número de movimentações: %d\n", removido->dado);//movimento +1
+        estacionamento = movimentaCarros(estacionamento, placa);
         liberaMemoriaNodo(removido);
         while (!filaVazia(espera) && estacionamento->size < 10) {
             Nodo* carroEspera = removeElementoFila(espera);
             if (carroEspera != NULL) {
-                insereElementoFila(estacionamento, carroEspera->placa, carroEspera->movimentacao + 1);
-                printf("Carro com placa %d removido da fila de espera e inserido no estacionamento. Número de movimentações: %d\n", carroEspera->placa, carroEspera->movimentacao);
+                insereElementoFila(estacionamento, carroEspera->dado);//movimento +1
+                printf("Carro com placa %d removido da fila de espera e inserido no estacionamento. Número de movimentações: %d\n", carroEspera->dado);//movimento +1
                 liberaMemoriaNodo(carroEspera);
             }
         }
@@ -296,11 +122,19 @@ int partidaCarro(int placa, Fila* estacionamento, Fila* espera) {
     return 0;
 }
 
-Fila* movimentaCarros(Fila* estacionamento) {
+Fila* movimentaCarros(Fila* estacionamento, int placa) {
+    Nodo* primeiro = estacionamento->front;
     Nodo* no = estacionamento->front;
-    if (no != NULL) {
-        while (no->next != NULL) {
-            no->movimentacao++;
+
+    if (primeiro->dado != placa) {
+        while (no->next != primeiro)
+        {
+            Nodo* removido = removeElementoFila(estacionamento);
+            if (removido->dado != placa) {
+                insereElementoFila(estacionamento, removido->dado); //movimento +1
+                //printf("Carro com placa %d movimentado. Número de movimentações: %d\n", removido->placa, removido->movimentacao);
+                liberaMemoriaNodo(removido);
+            }
             no = no->next;
         }
     }
