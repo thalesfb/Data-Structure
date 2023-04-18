@@ -149,7 +149,7 @@ void percorreFilaHeadTail(Fila* fila) {
         printf("Fila %s: \n", fila->nomeFila); */
     while (no != NULL)
     {
-        printf("\nPlaca: %i \t Movimentações: %i", no->dado, no->movimentacao);
+        printf("\nDado: %i \t Movimentações: %i", no->dado, no->movimentacao);
         no = no->next;
     }
     printf("\n");
@@ -161,7 +161,7 @@ void percorreFilaTailHead(Fila* fila) {
 
     while (no != NULL)
     {
-        printf("\nPlaca: %i \t Movimentações: %i", no->dado, no->movimentacao);
+        printf("\nDado: %i \t Movimentações: %i", no->dado, no->movimentacao);
         no = no->prev;
     }
     printf("\n");
