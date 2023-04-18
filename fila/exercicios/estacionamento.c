@@ -2,14 +2,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-//#include <inttypes.h>
 #include "../filas_tradicionais.h"
 
-
-//protótipos
 int partidaCarro(int, Fila*, Fila*);
 void chegadaCarro(int, Fila*, Fila*);
 Fila* movimentaCarros(Fila*, int);
+void testeEstacionamento(Fila**, Fila**);
 
 int main() {
 
@@ -33,21 +31,12 @@ int main() {
         {
         case 1:
             printf("Digite a movimentação(C para chegada e P pra Partida): ");
-            //fflush(stdin);
             scanf(" %c", &entrada);
             printf("Digite a placa do carro:");
             scanf("%d", &placa);
             if (entrada == 'C' || entrada == 'c')
             {
-                if (estacionamento->size == 10)
-                {
-                    printf("Estacionamento cheio! Ficará no aguardo de uma vaga!");
-                    insereElementoFila(espera, placa);
-                }
-                else
-                {
-                    insereElementoFila(estacionamento, placa);
-                }
+                chegadaCarro(placa, estacionamento, espera);
             }
             else if (entrada == 'P' || entrada == 'p')
             {
@@ -72,11 +61,13 @@ int main() {
             opcao = 0;
             break;
         case 3:
-            testeFila();
+            testeEstacionamento(&estacionamento, &espera);
             opcao = 0;
             break;
         case 4:
             printf("Saindo...");
+            liberaFila(estacionamento);
+            liberaFila(espera);
             exit(0);
             break;
         default:
@@ -87,9 +78,6 @@ int main() {
     }
     return 0;
 }
-
-//implementação
-
 
 int partidaCarro(int placa, Fila* estacionamento, Fila* espera) {
 
@@ -103,20 +91,26 @@ int partidaCarro(int placa, Fila* estacionamento, Fila* espera) {
             return 1;
         }
         removeElementoFila(espera);
-        printf("Carro com placa %d removido da fila de espera.\n", placa);
+        printf("Carro com placa %d removido da fila de espera. Número de movimentações %d\n", placa, carro->movimentacao);
     }
     else {
-        Nodo* removido = removeElementoFila(estacionamento);
-        printf("Carro com placa %d removido do estacionamento. Número de movimentações: %d\n", removido->dado);//movimento +1
-        estacionamento = movimentaCarros(estacionamento, placa);
-        liberaMemoriaNodo(removido);
-        while (!filaVazia(espera) && estacionamento->size < 10) {
-            Nodo* carroEspera = removeElementoFila(espera);
-            if (carroEspera != NULL) {
-                insereElementoFila(estacionamento, carroEspera->dado);//movimento +1
-                printf("Carro com placa %d removido da fila de espera e inserido no estacionamento. Número de movimentações: %d\n", carroEspera->dado);//movimento +1
-                liberaMemoriaNodo(carroEspera);
+        if (estacionamento->front == carro) {
+            removeElementoFila(estacionamento);
+            printf("Carro com placa %d removido do estacionamento. Número de movimentações %d\n", placa, carro->movimentacao);
+        }
+        else {
+            estacionamento = movimentaCarros(estacionamento, placa);
+            percorreFilaHeadTail(estacionamento);
+            while (!filaVazia(espera) && estacionamento->size < 10) {
+                Nodo* carroEspera = removeElementoFila(espera);
+                if (carroEspera != NULL) {
+                    insereElementoFila(estacionamento, carroEspera->dado, carroEspera->movimentacao + 1);
+                    printf("Carro com placa %d removido da fila de espera e inserido no estacionamento. Número de movimentações %d\n", carroEspera->dado, carroEspera->movimentacao);
+                    liberaMemoriaNodo(carroEspera);
+                }
             }
+            percorreFilaHeadTail(estacionamento);
+            return 1;
         }
     }
     return 0;
@@ -125,18 +119,50 @@ int partidaCarro(int placa, Fila* estacionamento, Fila* espera) {
 Fila* movimentaCarros(Fila* estacionamento, int placa) {
     Nodo* primeiro = estacionamento->front;
     Nodo* no = estacionamento->front;
-
-    if (primeiro->dado != placa) {
-        while (no->next != primeiro)
-        {
-            Nodo* removido = removeElementoFila(estacionamento);
-            if (removido->dado != placa) {
-                insereElementoFila(estacionamento, removido->dado); //movimento +1
-                //printf("Carro com placa %d movimentado. Número de movimentações: %d\n", removido->placa, removido->movimentacao);
-                liberaMemoriaNodo(removido);
-            }
-            no = no->next;
+    do
+    {
+        printf("Primeiro dado: %d\n", primeiro->dado);
+        printf("Dado: %d\n", no->dado);
+        Nodo* removido = removeElementoFila(estacionamento);
+        printf("Removido: %d\n", removido->dado);
+        if (no->dado != placa) { //estacionamento->data != placa
+            insereElementoFila(estacionamento, removido->dado, removido->movimentacao + 1);
         }
-    }
+        if (removido->dado != placa) {
+            printf("Carro com placa %d movimentado. Número de movimentações: %d\n", estacionamento->rear->dado, estacionamento->rear->movimentacao);
+        }
+        no = no->next;
+    } while (no->dado != primeiro->dado);
     return estacionamento;
+}
+
+void chegadaCarro(int placa, Fila* estacionamento, Fila* espera) {
+    if (estacionamento->size < 10) {
+        insereElementoFila(estacionamento, placa, 0);//movimento +1
+        printf("Carro com placa %d inserido no estacionamento.\n", placa);//movimento +1
+    }
+    else {
+        insereElementoFila(espera, placa, 0);
+        printf("Carro com placa %d inserido na fila de espera.\n", placa);
+    }
+}
+
+void testeEstacionamento(Fila** estacionamento, Fila** espera) {
+    chegadaCarro(1, *estacionamento, *espera);
+    chegadaCarro(2, *estacionamento, *espera);
+    chegadaCarro(3, *estacionamento, *espera);
+    chegadaCarro(4, *estacionamento, *espera);
+    chegadaCarro(5, *estacionamento, *espera);
+    chegadaCarro(6, *estacionamento, *espera);
+    chegadaCarro(7, *estacionamento, *espera);
+    chegadaCarro(8, *estacionamento, *espera);
+    chegadaCarro(9, *estacionamento, *espera);
+    chegadaCarro(10, *estacionamento, *espera);
+    chegadaCarro(11, *estacionamento, *espera);
+    chegadaCarro(12, *estacionamento, *espera);
+
+    partidaCarro(3, *estacionamento, *espera);
+    partidaCarro(10, *estacionamento, *espera);
+    partidaCarro(12, *estacionamento, *espera);
+    partidaCarro(1, *estacionamento, *espera);
 }

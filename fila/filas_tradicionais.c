@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include "filas_tradicionais.h"
 //#include "lista/lista_encadeada_dupla.c"
 //#include <inttypes.h>
 
-typedef struct sNodo {
+/* typedef struct sNodo {
     int dado;
     struct sNodo* next;
     struct sNodo* prev;
@@ -15,10 +16,10 @@ typedef struct sFila {
     struct sNodo* front;
     struct sNodo* rear;
     int size;
-} Fila;
+} Fila; */
 
 //protótipos
-void liberaMemoriaNodo(Nodo*);
+/* void liberaMemoriaNodo(Nodo*);
 Nodo* alocaMemoriaNodo();
 Nodo* criaNodo(int dado);
 Fila* alocaMemoriaFila();
@@ -30,94 +31,94 @@ Fila* criaFila();
 Nodo* buscaFila(Fila*, int);
 bool filaVazia(Fila*);
 void testeFila();
+ */
+ /* int main() {
 
-/* int main() {
+     int opcao = 0, dado = 0;
+     Fila* fila;
 
-    int opcao = 0, dado = 0;
-    Fila* fila;
+     while (opcao != 7)
+     {
+         printf("\n\n");
+         printf("Digite uma das opções abaixo:\n");
+         printf("1 - Criar fila\n");
+         printf("2 - Inserir elemento na fila\n");
+         printf("3 - Remover elemento da fila\n");
+         printf("4 - Buscar elemento na fila\n");
+         printf("5 - Imprimir fila\n");
+         printf("6 - Testar a fila\n");
+         printf("7 - Sair\n");
+         printf("Opção: ");
+         scanf("%i", &opcao);
 
-    while (opcao != 7)
-    {
-        printf("\n\n");
-        printf("Digite uma das opções abaixo:\n");
-        printf("1 - Criar fila\n");
-        printf("2 - Inserir elemento na fila\n");
-        printf("3 - Remover elemento da fila\n");
-        printf("4 - Buscar elemento na fila\n");
-        printf("5 - Imprimir fila\n");
-        printf("6 - Testar a fila\n");
-        printf("7 - Sair\n");
-        printf("Opção: ");
-        scanf("%i", &opcao);
+         switch (opcao)
+         {
+         case 1:
+             fila = criaFila();
+             printf("Nome da fila:");
+             scanf("%s", fila->nomeFila);
+             if (fila == NULL) {
+                 printf("Erro ao criar fila!");
+             }
+             else {
+                 printf("Fila %s criada com sucesso!", fila->nomeFila);
+             }
+             opcao = 0;
+             break;
+         case 2:
+             printf("Digite o dado a ser inserido: ");
+             scanf("%i", &dado);
+             if (insereElementoFila(fila, dado) == 0)
+             {
+                 printf("Elemento inserido com sucesso!");
+             }
+             else
+             {
+                 printf("Erro ao inserir elemento!");
+             }
+             opcao = 0;
+             break;
+         case 3:
+             if (filaVazia(fila)) {
+                 printf("Erro ao remover elemento! A fila está vazia!");
+             }
+             else
+             {
+                 Nodo* removido = removeElementoFila(fila);
+                 printf("Elemento removido com sucesso: %d!", removido->dado);
+                 liberaMemoriaNodo(removido);
+             }
+             opcao = 0;
+             break;
+         case 4:
+             printf("Digite o dado a ser buscado: ");
+             scanf("%i", &dado);
+             if (buscaFila(fila, dado) == NULL)
+             {
+                 printf("Elemento não encontrado!");
+             }
+             opcao = 0;
+             break;
+         case 5:
+             percorreFilaHeadTail(fila);
+             opcao = 0;
+             break;
+         case 6:
+             testeFila();
+             opcao = 0;
+             break;
+         case 7:
+             exit(0);
+             break;
+         default:
+             printf("Opção inválida!");
+             break;
+         }
+     }
+     return 0;
+ } */
 
-        switch (opcao)
-        {
-        case 1:
-            fila = criaFila();
-            printf("Nome da fila:");
-            scanf("%s", fila->nomeFila);
-            if (fila == NULL) {
-                printf("Erro ao criar fila!");
-            }
-            else {
-                printf("Fila %s criada com sucesso!", fila->nomeFila);
-            }
-            opcao = 0;
-            break;
-        case 2:
-            printf("Digite o dado a ser inserido: ");
-            scanf("%i", &dado);
-            if (insereElementoFila(fila, dado) == 0)
-            {
-                printf("Elemento inserido com sucesso!");
-            }
-            else
-            {
-                printf("Erro ao inserir elemento!");
-            }
-            opcao = 0;
-            break;
-        case 3:
-            if (filaVazia(fila)) {
-                printf("Erro ao remover elemento! A fila está vazia!");
-            }
-            else
-            {
-                Nodo* removido = removeElementoFila(fila);
-                printf("Elemento removido com sucesso: %d!", removido->dado);
-                liberaMemoriaNodo(removido);
-            }
-            opcao = 0;
-            break;
-        case 4:
-            printf("Digite o dado a ser buscado: ");
-            scanf("%i", &dado);
-            if (buscaFila(fila, dado) == NULL)
-            {
-                printf("Elemento não encontrado!");
-            }
-            opcao = 0;
-            break;
-        case 5:
-            percorreFilaHeadTail(fila);
-            opcao = 0;
-            break;
-        case 6:
-            testeFila();
-            opcao = 0;
-            break;
-        case 7:
-            exit(0);
-            break;
-        default:
-            printf("Opção inválida!");
-            break;
-        }
-    }
-    return 0;
-} */
-
-//implementação
+ //implementação
 void liberaMemoriaNodo(Nodo* no) {
     free(no);
 }
@@ -131,6 +132,7 @@ Nodo* criaNodo(int dado) {
     if (no != NULL)
     {
         no->dado = dado;
+        no->movimentacao = 0;
         no->prev = NULL;
         no->next = NULL;
     }
@@ -143,13 +145,14 @@ Fila* alocaMemoriaFila() {
 
 void percorreFilaHeadTail(Fila* fila) {
     Nodo* no = fila->front;
-/*     printf("Tamanho da %s: %i \n", fila->nomeFila, fila->size);
-    printf("Fila %s: \n", fila->nomeFila); */
+    /*     printf("Tamanho da %s: %i \n", fila->nomeFila, fila->size);
+        printf("Fila %s: \n", fila->nomeFila); */
     while (no != NULL)
     {
-        printf("%i \t", no->dado);
+        printf("\nPlaca: %i \t Movimentações: %i", no->dado, no->movimentacao);
         no = no->next;
     }
+    printf("\n");
 }
 void percorreFilaTailHead(Fila* fila) {
     Nodo* no = fila->rear;
@@ -158,12 +161,13 @@ void percorreFilaTailHead(Fila* fila) {
 
     while (no != NULL)
     {
-        printf("%i \t", no->dado);
+        printf("\nPlaca: %i \t Movimentações: %i", no->dado, no->movimentacao);
         no = no->prev;
     }
+    printf("\n");
 }
 
-int insereElementoFila(Fila* fila, int dado) {
+int insereElementoFila(Fila* fila, int dado, int movimentacao) {
     Nodo* novo = criaNodo(dado);
 
     if (novo == NULL) {
@@ -177,6 +181,7 @@ int insereElementoFila(Fila* fila, int dado) {
     else {
         novo->next = NULL;
         novo->prev = fila->rear;
+        novo->movimentacao = movimentacao;
         fila->rear->next = novo;
         fila->rear = novo;
         printf("Inserindo elemento no final da fila!\n");
@@ -228,13 +233,22 @@ Nodo* buscaFila(Fila* fila, int dado) {
 bool filaVazia(Fila* fila) {
     return (fila->size == 0);
 }
+
+void liberaFila(Fila* fila) {
+    while (!filaVazia(fila)) {
+        Nodo* removido = removeElementoFila(fila);
+        liberaMemoriaNodo(removido);
+    }
+    free(fila);
+}
+
 void testeFila() {
     Fila* fila = criaFila();
     /* strcpy(fila->nomeFila, "TesteFila"); */
 
-    insereElementoFila(fila, 1);
-    insereElementoFila(fila, 2);
-    insereElementoFila(fila, 3);
+    insereElementoFila(fila, 1, 0);
+    insereElementoFila(fila, 2, 0);
+    insereElementoFila(fila, 3, 0);
 
     if (fila->front->dado != 1 || fila->rear->dado != 3 || fila->size != 3) {
         printf("Erro: Inserção de elementos falhou.\n");
