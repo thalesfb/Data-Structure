@@ -60,11 +60,15 @@ typedef struct sTeste {
 } Teste;
 
 Teste testes[] = {
-  {"(A + B}", false},
-  {"{[A + B] - [(C - D)]", false},
-  {"(A + B)-{C + D}-[F+ G]", true},
-  {"((H) * {([J + K])})", true},
-  {"(((A))))", false},
+  {"(([({[({})}])]))", false},
+  {"[({[([{}])]})]", true},
+  {"([]))", false},
+  {"(([])", false},
+  //{"(A + B}", false},
+  //{"{[A + B] - [(C - D)]", false},
+  //{"(A + B)-{C + D}-[F+ G]", true},
+  //{"((H) * {([J + K])})", true},
+  //{"(((A))))", false},
 };
 
 bool delimitadorAbre(char);
@@ -86,13 +90,13 @@ int main() {
     printf("2 - Inserir expressao\n");
     printf("3 - Sair\n");
     printf("Opcao: ");
-    fflush(stdin);
+    //fflush(stdin);
     scanf("%d", &opcao);
     getchar();
     switch (opcao)
     {
     case 1:
-      for (size_t i = 0; i < strlen(expressao); i++)
+      for (size_t i = 0; i < (sizeof(testes) / sizeof(testes[0])); i++)
       {
         printf("\n");
         printf("Expressao: %s", testes[i].expressao);
@@ -104,6 +108,8 @@ int main() {
           printf(" eh invalida! ");
         }
         printf("Esperado: %s", testes[i].valido ? "Valido" : "Invalido");
+        //printf("\n%i\n", i);
+        //printf("Tamanho: %i\n", sizeof(testes)/ sizeof(testes[0]));
       }
       opcao = 0;
       break;
@@ -156,9 +162,10 @@ bool validaExpressao(char* expressao)
   for (size_t i = 0; i < strlen(expressao); i++)
   {
     printf("\n");
+    //printf("i: %d\n", i);
     percorrePilha(pilha);
     char c = expressao[i];
-    printf("Caractere: %c\n", c);
+    //printf("Caractere: %c\n", c);
     if (delimitadorAbre(c))
     {
       printf("Empilhando delimitador: %c\n", c);
@@ -166,10 +173,10 @@ bool validaExpressao(char* expressao)
     }
     else if (delimitadorFecha(c))
     {
-      printf("Encontrado delimitador de fechamento: %c\n", c);
+      //printf("Encontrado delimitador de fechamento: %c\n", c);
       if (pilhaVazia(pilha))
       {
-        printf("Pilha vazia. Delimitador sem correspondencia\n");
+        printf("Pilha vazia. Delimitador sem correspondencia.\n");
         liberaPilha(pilha);
         return false;
       }
@@ -179,6 +186,7 @@ bool validaExpressao(char* expressao)
           printf("Delimitadores correspondem: %c e %c\n", (char)pilha->tail->dado, c);
           Nodo* nodo = pop(pilha);
           char c2 = (char)nodo->dado;
+          //printf("Desempilhando delimitador: %c\n", c2);
           if (nodo == NULL)
           {
             printf("Erro ao desempilhar\n");
@@ -193,7 +201,7 @@ bool validaExpressao(char* expressao)
             return false;
           }
           free(nodo);
-          printf("Desempilhando delimitador: %c\n", c2);
+          //printf("Desempilhando delimitador: %c\n", c2);
         }
         else {
           printf("Delimitadores nao correspondem: %c e %c\n", (char)pilha->tail->dado, c);
