@@ -8,29 +8,32 @@ void push(Lista*, Nodo*); //ok
 Nodo* pop(Lista*); //ok
 bool pilhaVazia(Lista*); //ok
 void percorrePilha(Lista*); //ok
-Nodo* topPilha(Lista*); //ok
+/* Nodo* topPilha(Lista*); //ok */
 void liberaPilha(Lista*); //ok
 void testePilha(Lista**); //ok
+/* Nodo* removePilha(Lista*); //ok */
 
-Nodo* topPilha(Lista* pilha) {
+/* Nodo* topPilha(Lista* pilha) {
   if (pilha != NULL && pilha->size > 0)
   {
     return pilha->tail;
   }
   return NULL;
-}
+} */
 
 void push(Lista* pilha, Nodo* no) {
   if (pilha != NULL && no != NULL)
   {
-    insereElementoLista(pilha, topPilha(pilha), no->dado);
+    insereElementoLista(pilha, pilha->tail, no->dado);
   }
 }
 
 Nodo* pop(Lista* pilha) {
   if (pilha != NULL && pilha->size > 0)
   {
-    return removeElementoLista(pilha, topPilha(pilha));
+    Nodo* removido = removeElementoLista(pilha, pilha->tail);
+    pilha->size--;
+    return removido;
   }
   return NULL;
 }
@@ -78,6 +81,39 @@ void testePilha(Lista** pilha) {
     printf("\n");
   }
 }
+
+/* Nodo* removePilha(Lista* pilha) {
+    if ((elemento != NULL) && (pilha->size != 0))
+    {
+      if (elemento == lista->head)
+      {
+        lista->head = elemento->next;
+        if (lista->head == NULL) {
+          lista->tail = NULL;
+        }
+        else
+        {
+          elemento->next->prev = NULL;
+        }
+
+      }
+      else
+      {
+        elemento->prev->next = elemento->next;
+        if (elemento->next == NULL)
+        {
+          lista->tail = elemento->prev;
+        }
+        else
+        {
+          elemento->next->prev = elemento->prev;
+        }
+      }
+      lista->size--;
+      return elemento;
+    }
+    return NULL;
+  } */
 
 /* int main() {
   Lista* pilha;
