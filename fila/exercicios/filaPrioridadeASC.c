@@ -10,6 +10,7 @@ Demonstre como classificar o conjunto de números de entrada (20, 13, 4, 2, 18, 
 #include <stdbool.h>
 #include <string.h>
 #include "../filas_tradicionais.c"
+#include "../lista/lista_encadeada_dupla.c"
 
 int pqinsert(int, Fila*);
 Nodo* pqmindelete(Fila*);
@@ -65,7 +66,37 @@ int main() {
   }
 }
 
-int pqinsert(int dado, Fila* fila) {
+int pqinsert(int dado, Fila* fila)
+{
+  //return insereElementoLista(fila, fila->rear, dado);
+  Nodo* novo = criaNodo(dado);
+  if (novo == NULL) {
+    return -1; //retorna -1 quando não for possível alocar memória
+  }
+  if ((fila->rear == NULL) && (fila->size != 0))
+  {
+    return -2;
+  }
+  if (fila->size == 0) {
+    fila->front = novo;
+    fila->rear = novo;
+  }
+  else {
+    novo->next = fila->rear->next;
+    novo->prev = fila->rear;
+
+    if (fila->rear->next == NULL) {
+      fila->rear = novo;
+    }
+    else {
+      fila->rear->next->prev = novo;
+    }
+    fila->rear->next = novo;
+  }
+  fila->size++;
+}
+
+/* int pqinsert(int dado, Fila* fila) {
   Nodo* novo = criaNodo(dado);
   Nodo* aux = fila->front;
   if (novo == NULL)
@@ -111,7 +142,7 @@ int pqinsert(int dado, Fila* fila) {
     fila->size++;
   }
   return 1;
-}
+} */
 
 Nodo* pqmindelete(Fila* fila) {
   Nodo* aux = fila->front;
@@ -122,15 +153,36 @@ Nodo* pqmindelete(Fila* fila) {
   }
   else
   {
-    fila->front = fila->front->next;
-    if (fila->front != NULL)
+    if (fila->front == fila->rear)
     {
-      fila->front->prev = NULL;
+      removeElementoLista(fila, aux);
     }
     else
     {
-      fila->rear = NULL;
+      while (aux->next != NULL)
+      {
+        if (aux->next->dado < aux->dado)
+        {
+          aux = aux->next;
+        }
+      }
+
+      /*       if (fila->front->next->dado < aux->dado)
+            {
+              aux = fila->front->next;
+            } */
+      removeElementoLista(fila, aux);
     }
+
+    /*     fila->front = fila->front->next;
+        if (fila->front != NULL)
+        {
+          fila->front->prev = NULL;
+        }
+        else
+        {
+          fila->rear = NULL;
+        } */
     fila->size--;
   }
   return aux;
