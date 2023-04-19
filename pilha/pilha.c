@@ -31,9 +31,7 @@ void push(Lista* pilha, Nodo* no) {
 Nodo* pop(Lista* pilha) {
   if (pilha != NULL && pilha->size > 0)
   {
-    Nodo* removido = removeElementoLista(pilha, pilha->tail);
-    pilha->size--;
-    return removido;
+    return removeElementoLista(pilha, pilha->tail);
   }
   return NULL;
 }
@@ -115,9 +113,9 @@ void testePilha(Lista** pilha) {
     return NULL;
   } */
 
-/* int main() {
-  Lista* pilha;
-  testePilha(&pilha);
-  liberaPilha(pilha);
-  return 0;
-} */
+  /* int main() {
+    Lista* pilha;
+    testePilha(&pilha);
+    liberaPilha(pilha);
+    return 0;
+  } */
