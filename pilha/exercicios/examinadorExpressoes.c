@@ -50,6 +50,7 @@ existem um ou mais escopos abertos que ainda não foram fechados, e a expressão
 #include <string.h>
 #include <stdbool.h>
 #include "../pilha.c"
+#include <locale.h>
 
 #define n 100
 
@@ -69,63 +70,72 @@ Teste testes[] = {
 bool delimitadorAbre(char);
 bool delimitadorFecha(char);
 bool delimitadorCorreto(char, char);
-bool validaExpressao(Lista*, const char*);
+bool validaExpressao(char*);
 
 int main() {
 
-  Lista* pilha = criaLista();
+  setlocale(LC_ALL, "pt_BR.UTF-8");
+
   char expressao[n];
   int opcao = 0;
 
   while (opcao != 3)
   {
     printf("\n\n");
-    printf("1 - Testar expressões\n");
-    printf("2 - Inserir expressão\n");
+    printf("1 - Testar expressoes\n");
+    printf("2 - Inserir expressao\n");
     printf("3 - Sair\n");
-    printf("Opção: ");
+    printf("Opcao: ");
+    fflush(stdin);
     scanf("%d", &opcao);
+    getchar();
     switch (opcao)
     {
     case 1:
-      for (size_t i = 0; i < sizeof(testes) / sizeof(Teste); i++)
+      for (size_t i = 0; i < strlen(expressao); i++)
       {
         printf("\n");
-        printf("Expressão: %s", testes[i].expressao);
-        if (validaExpressao(pilha, testes[i].expressao))
+        printf("Expressao: %s", testes[i].expressao);
+        if (validaExpressao((char*)testes[i].expressao))
         {
-          printf(" é válida! ");
+          printf(" eh valida! ");
         }
         else {
-          printf(" é inválida! ");
+          printf(" eh invalida! ");
         }
-        printf("Esperado: %s", testes[i].valido ? "Válido" : "Inválido");
+        printf("Esperado: %s", testes[i].valido ? "Valido" : "Invalido");
       }
+      opcao = 0;
       break;
     case 2:
-      printf("Digite uma expressão: ");
-      scanf("%s", expressao);
-      printf("Expressão: %s", expressao);
-      if (validaExpressao(pilha, expressao))
+      printf("Digite uma expressao: ");
+      fgets(expressao, n, stdin);
+      expressao[strcspn(expressao, "\n")] = '\0';
+      expressao[strlen(expressao)] = '\0';
+      //scanf("%s", expressao);
+      //printf("Expressão: %s", expressao);
+      if (validaExpressao(expressao))
       {
-        printf(" é válida!");
+        printf(" é valida!");
       }
       else {
-        printf(" é inválida!");
+        printf(" é invalida!");
       }
+      opcao = 0;
       break;
     case 3:
       printf("Saindo...");
-      liberaPilha(pilha);
+      //liberaPilha(pilha);
       break;
     default:
-      printf("Opção inválida!");
+      printf("Opção invalida!");
+      opcao = 0;
       break;
     }
   }
 }
 
-bool delitadorAbre(char c) {
+bool delimitadorAbre(char c) {
   return c == '(' || c == '[' || c == '{';
 }
 
@@ -134,46 +144,85 @@ bool delimitadorFecha(char c) {
 }
 
 bool delimitadorCorreto(char c1, char c2) {
-  return (c1 == '(' && c2 == ')') || (c1 == '[' && c2 == ']') || (c1 == '{' && c2 == '}');
+  return (c2 == ')' && c1 == '(') || (c2 == ']' && c1 == '[') || (c2 == '}' && c1 == '{');
 }
-bool validaExpressao(Lista* pilha, const char* expressao)
+
+bool validaExpressao(char* expressao)
 {
+  Lista* pilha = criaLista();
+  if (pilha == NULL)
+  {
+    printf("Erro ao criar pilha\n");
+    return false;
+  }
   for (size_t i = 0; i < strlen(expressao); i++)
   {
+    printf("\n");
+    percorrePilha(pilha);
     char c = expressao[i];
-
-    if (delitadorAbre(c))
+    printf("Caractere: %c\n", c);
+    if (delimitadorAbre(c))
     {
+      printf("Empilhando delimitador: %c\n", c);
       push(pilha, criaNodo((int)c));
     }
     else if (delimitadorFecha(c))
     {
+      printf("Encontrado delimitador de fechamento: %c\n", c);
+      //pop(pilha);
       if (pilhaVazia(pilha))
       {
+        printf("Pilha vazia. Delimitador sem correspondencia\n");
         liberaPilha(pilha);
         return false;
       }
       else {
-        Nodo* nodo = pop(pilha);
-        char c2 = (char)nodo->dado;
-        if (!delimitadorCorreto(c2, c))
+        if (delimitadorCorreto((char)pilha->tail->dado, c))
         {
+          printf("Delimitadores correspondem: %c e %c\n", (char)pilha->tail->dado, c);
+          Nodo* nodo = pop(pilha);
+          char c2 = (char)nodo->dado;
+          if (nodo == NULL)
+          {
+            printf("Erro ao desempilhar\n");
+            liberaPilha(pilha);
+            return false;
+          }
+          else if (c2 == '\0')
+          {
+            printf("Erro ao desempilhar\n");
+            free(nodo);
+            liberaPilha(pilha);
+            return false;
+          }
           free(nodo);
+          printf("Desempilhando delimitador: %c\n", c2);
+        }
+        else {
+          printf("Delimitadores nao correspondem: %c e %c\n", (char)pilha->tail->dado, c);
           liberaPilha(pilha);
           return false;
         }
-        free(nodo);
+        /*         if (!delimitadorCorreto(c2, c))
+                {
+                  printf("Delimitadores nao correspondem: %c e %c\n", c2, c);
+                  free(nodo);
+                  liberaPilha(pilha);
+                  return false;
+                }
+                free(nodo);*/
       }
     }
   }
   if (pilhaVazia(pilha))
   {
+    printf("Pilha vazia, expressao valida!\n");
     liberaPilha(pilha);
     return true;
   }
   else {
+    printf("Pilha nao vazia, expressao invalida!\n");
     liberaPilha(pilha);
     return false;
   }
-  //liberaPilha(pilha);
 }
