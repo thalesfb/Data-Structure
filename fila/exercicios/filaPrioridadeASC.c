@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include "../filas_tradicionais.h"
+#include "../filas_tradicionais.c"
 
 /* Implemente uma fila de prioridade ascendente e suas operações, pqinsert,
 pqmindelete e empty, usando cada um dos quatro métodos apresentados no texto.

@@ -23,6 +23,7 @@ int insereElementoLista(Lista*, Nodo*, int); // ok
 Nodo* removeElementoLista(Lista*, Nodo*); // ok
 Lista* criaLista(); // ok 
 Nodo* buscaLista(Lista*, int);
+void liberaMemoriaLista(Lista*);
 
 /* int main() {
     Lista* lista1;
@@ -116,6 +117,7 @@ int insereElementoLista(Lista* lista, Nodo* pivo, int dado) {
 }
 
 Nodo* removeElementoLista(Lista* lista, Nodo* elemento) {
+    Nodo* no = lista->head;
     if ((elemento != NULL) && (lista->size != 0))
     {
         if (elemento == lista->head)
@@ -144,6 +146,7 @@ Nodo* removeElementoLista(Lista* lista, Nodo* elemento) {
         }
         liberaMemoriaNodo(elemento);
         lista->size--;
+        return no;
     }
 }
 Lista* criaLista() {
@@ -166,4 +169,16 @@ Nodo* buscaLista(Lista* lista, int dado) {
         }
         no = no->next;
     }
+}
+void liberaMemoriaLista(Lista* lista) {
+    Nodo* no = lista->head;
+    Nodo* aux;
+
+    while (no != NULL)
+    {
+        aux = no;
+        no = no->next;
+        liberaMemoriaNodo(aux);
+    }
+    free(lista);
 }

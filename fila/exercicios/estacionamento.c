@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include "../filas_tradicionais.h"
+#include "../filas_tradicionais.c"
 
 int partidaCarro(int, Fila*, Fila*);
 void chegadaCarro(int, Fila*, Fila*);
