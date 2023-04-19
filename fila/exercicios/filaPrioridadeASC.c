@@ -1,14 +1,15 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
-#include "../filas_tradicionais.c"
 
 /* Implemente uma fila de prioridade ascendente e suas operações, pqinsert,
 pqmindelete e empty, usando cada um dos quatro métodos apresentados no texto.
 
 Demonstre como classificar o conjunto de números de entrada (20, 13, 4, 2, 18, 40, 2, 19, 1)
  usando uma fila de prioridade ascendente e as operações pqinsert, pqmindelete e empty. */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include "../filas_tradicionais.c"
 
 int pqinsert(int, Fila*);
 Nodo* pqmindelete(Fila*);
