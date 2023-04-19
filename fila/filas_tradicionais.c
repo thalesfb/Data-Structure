@@ -2,36 +2,35 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include "filas_tradicionais.h"
+//#include "filas_tradicionais.h"
 //#include "lista/lista_encadeada_dupla.c"
 //#include <inttypes.h>
-
-/* typedef struct sNodo {
+typedef struct sNodo {
     int dado;
+    int movimentacao;
     struct sNodo* next;
     struct sNodo* prev;
 } Nodo;
-
 typedef struct sFila {
     struct sNodo* front;
     struct sNodo* rear;
     int size;
-} Fila; */
+} Fila; 
 
 //protótipos
-/* void liberaMemoriaNodo(Nodo*);
+void liberaMemoriaNodo(Nodo*);
 Nodo* alocaMemoriaNodo();
 Nodo* criaNodo(int dado);
 Fila* alocaMemoriaFila();
 void percorreFilaHeadTail(Fila*);
 void percorreFilaTailHead(Fila*);
-int insereElementoFila(Fila*, int);
+int insereElementoFila(Fila*, int, int);
 Nodo* removeElementoFila(Fila*);
 Fila* criaFila();
 Nodo* buscaFila(Fila*, int);
 bool filaVazia(Fila*);
 void testeFila();
- */
+void liberaFila(Fila* fila);//ok
  /* int main() {
 
      int opcao = 0, dado = 0;
