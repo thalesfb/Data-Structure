@@ -116,7 +116,7 @@ int insereElementoLista(Lista* lista, Nodo* pivo, int dado) {
     lista->size++;
 }
 
-Nodo* removeElementoLista(Lista* lista, Nodo* elemento) {
+/* Nodo* removeElementoLista(Lista* lista, Nodo* elemento) {
     Nodo* no = lista->head;
     if ((elemento != NULL) && (lista->size != 0))
     {
@@ -148,6 +148,37 @@ Nodo* removeElementoLista(Lista* lista, Nodo* elemento) {
         lista->size--;
         return no;
     }
+} */
+Nodo* removeElementoLista(Lista* lista, Nodo* elemento) {
+    if ((elemento != NULL) && (lista->size != 0))
+    {
+        if (elemento == lista->head)
+        {
+            lista->head = elemento->next;
+            if (lista->head == NULL) {
+                lista->tail = NULL;
+            }
+            else
+            {
+                elemento->next->prev = NULL;
+            }
+        }
+        else
+        {
+            elemento->prev->next = elemento->next;
+            if (elemento->next == NULL)
+            {
+                lista->tail = elemento->prev;
+            }
+            else
+            {
+                elemento->next->prev = elemento->prev;
+            }
+        }
+        lista->size--;
+        return elemento;
+    }
+    return NULL;
 }
 Lista* criaLista() {
     Lista* lista = alocaMemoriaLista(lista);
