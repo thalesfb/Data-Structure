@@ -112,8 +112,6 @@ int main() {
       fgets(expressao, n, stdin);
       expressao[strcspn(expressao, "\n")] = '\0';
       expressao[strlen(expressao)] = '\0';
-      //scanf("%s", expressao);
-      //printf("Expressão: %s", expressao);
       if (validaExpressao(expressao))
       {
         printf(" é valida!");
@@ -169,7 +167,6 @@ bool validaExpressao(char* expressao)
     else if (delimitadorFecha(c))
     {
       printf("Encontrado delimitador de fechamento: %c\n", c);
-      //pop(pilha);
       if (pilhaVazia(pilha))
       {
         printf("Pilha vazia. Delimitador sem correspondencia\n");
@@ -203,14 +200,6 @@ bool validaExpressao(char* expressao)
           liberaPilha(pilha);
           return false;
         }
-        /*         if (!delimitadorCorreto(c2, c))
-                {
-                  printf("Delimitadores nao correspondem: %c e %c\n", c2, c);
-                  free(nodo);
-                  liberaPilha(pilha);
-                  return false;
-                }
-                free(nodo);*/
       }
     }
   }
