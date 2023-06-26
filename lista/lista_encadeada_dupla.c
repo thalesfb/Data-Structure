@@ -1,51 +1,30 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 typedef struct sNodo {
-    int dado;
+    char dado[100];
     struct sNodo* next;
     struct sNodo* prev;
 } Nodo;
-
 typedef struct sLista {
     struct sNodo* head;
     struct sNodo* tail;
     int size;
 } Lista;
 
-void liberaMemoriaNodo(Nodo*); // ok
-Nodo* alocaMemoriaNodo(); // ok
-Nodo* criaNodo(int dado); // ok
-Lista* alocaMemoriaLista(); // ok
-void percorreListaHeadTail(Lista*); // ok
-void percorreListaTailHead(Lista*); // ok
-int insereElementoLista(Lista*, Nodo*, int); // ok
-Nodo* removeElementoLista(Lista*, Nodo*); // ok
-Lista* criaLista(); // ok 
-Nodo* buscaLista(Lista*, int);
+void liberaMemoriaNodo(Nodo*);
+Nodo* alocaMemoriaNodo();
+Nodo* criaNodo(char*);
+Lista* alocaMemoriaLista();
+void percorreListaHeadTail(Lista*);
+void percorreListaTailHead(Lista*);
+int insereElementoLista(Lista*, Nodo*, char*);
+Nodo* removeElementoLista(Lista*, Nodo*);
+Lista* criaLista();
+Nodo* buscaLista(Lista*, char*);
 void liberaMemoriaLista(Lista*);
 
-/* int main() {
-    Lista* lista1;
 
-    //lista1 = alocaMemoriaLista(lista1);
-    lista1 = criaLista();
-    insereElementoLista(lista1, NULL, 10);
-    insereElementoLista(lista1, lista1->head, 5);
-    insereElementoLista(lista1, lista1->tail, 7);
-    insereElementoLista(lista1, NULL, 19);
-    insereElementoLista(lista1, lista1->head, 22);
-    removeElementoLista(lista1, lista1->head);
-    buscaLista(lista1, 7);
-    buscaLista(lista1, 5);
-    buscaLista(lista1, 22);
-
-    percorreListaHeadTail(lista1);
-    percorreListaTailHead(lista1);
-    return 0;
-} */
-
-//implementação
 void liberaMemoriaNodo(Nodo* no) {
     free(no);
 }
@@ -54,11 +33,11 @@ Nodo* alocaMemoriaNodo() {
     return (Nodo*)malloc(sizeof(Nodo));
 }
 
-Nodo* criaNodo(int dado) {
+Nodo* criaNodo(char* dado) {
     Nodo* no = alocaMemoriaNodo();
     if (no != NULL)
     {
-        no->dado = dado;
+        strcpy(no->dado, dado);
         no->prev = NULL;
         no->next = NULL;
     }
@@ -74,27 +53,30 @@ void percorreListaHeadTail(Lista* lista) {
 
     while (no != NULL)
     {
-        printf("%i \t", no->dado);
+        printf("%s \t", no->dado);
         no = no->next;
     }
 }
+
 void percorreListaTailHead(Lista* lista) {
     Nodo* no = lista->tail;
 
     while (no != NULL)
     {
-        printf("%i \t", no->dado);
+        printf("%s \t", no->dado);
         no = no->prev;
     }
 }
 
-int insereElementoLista(Lista* lista, Nodo* pivo, int dado) {
+int insereElementoLista(Lista* lista, Nodo* pivo, char* dado) {
     Nodo* novo = criaNodo(dado);
     if (novo == NULL) {
-        return -1; //retorna -1 quando não for possível alocar memória
+        printf("Erro ao criar novo nodo!\n");
+        return -1;
     }
     if ((pivo == NULL) && (lista->size != 0))
     {
+        printf("Erro ao inserir elemento na lista!\n");
         return -2;
     }
     if (lista->size == 0) {
@@ -114,41 +96,9 @@ int insereElementoLista(Lista* lista, Nodo* pivo, int dado) {
         pivo->next = novo;
     }
     lista->size++;
+    return 0;
 }
 
-/* Nodo* removeElementoLista(Lista* lista, Nodo* elemento) {
-    Nodo* no = lista->head;
-    if ((elemento != NULL) && (lista->size != 0))
-    {
-        if (elemento == lista->head)
-        {
-            lista->head = elemento->next;
-            if (lista->head == NULL) {
-                lista->tail = NULL;
-            }
-            else
-            {
-                elemento->next->prev = NULL;
-            }
-
-        }
-        else
-        {
-            elemento->prev->next = elemento->next;
-            if (elemento->next == NULL)
-            {
-                lista->tail = elemento->prev;
-            }
-            else
-            {
-                elemento->next->prev = elemento->prev;
-            }
-        }
-        liberaMemoriaNodo(elemento);
-        lista->size--;
-        return no;
-    }
-} */
 Nodo* removeElementoLista(Lista* lista, Nodo* elemento) {
     if ((elemento != NULL) && (lista->size != 0))
     {
@@ -190,16 +140,17 @@ Lista* criaLista() {
     }
     return lista;
 }
-Nodo* buscaLista(Lista* lista, int dado) {
+Nodo* buscaLista(Lista* lista, char* dado) {
     Nodo* no = lista->head;
 
     while (no != NULL) {
-        if (no->dado == dado) {
-            printf("%d\t", &no);
+        if (strcmp(no->dado, dado) == 0) {
+            printf("%s\t", no->dado);
             return no;
         }
         no = no->next;
     }
+    return NULL;
 }
 void liberaMemoriaLista(Lista* lista) {
     Nodo* no = lista->head;
