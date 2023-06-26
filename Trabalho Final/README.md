@@ -48,4 +48,4 @@ Em suma, este projeto atingiu os objetivos propostos e demonstrou a utilidade da
 
 ---
 
-Este projeto foi desenvolvido por Thales Ferreira para o Trabalho final da disciplian de Estrutura de Dados. Para mais detalhes, consulte o código-fonte no [Trabalho Final](https://github.com/thalesfb/ED-I/tree/main/Trabalho%20Final).
+Este projeto foi desenvolvido por Thales Ferreira para o Trabalho final da discipliana de Estrutura de Dados. Para mais detalhes, consulte o código-fonte no [Trabalho Final](https://github.com/thalesfb/ED-I/tree/main/Trabalho%20Final).
