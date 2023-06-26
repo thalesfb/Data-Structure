@@ -116,7 +116,6 @@ void ordenaElementosChave(TabelaHash* tabela, int chave) {
     nodo = nodo->next;
   }
   qsort(array, size, sizeof(char*), comparastrings);
-
   nodo = tabela->hash[chave]->head;
   for (int j = 0; nodo != NULL; j++) {
     strcpy(nodo->dado, array[j]);
