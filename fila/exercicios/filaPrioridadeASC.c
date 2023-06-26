@@ -10,7 +10,7 @@ Demonstre como classificar o conjunto de números de entrada (20, 13, 4, 2, 18, 
 #include <stdbool.h>
 #include <string.h>
 #include "../filas_tradicionais.c"
-#include "../lista/lista_encadeada_dupla.c"
+//#include "../lista/lista_encadeada_dupla.c"
 
 int pqinsert(int, Fila*);
 Nodo* pqmindelete(Fila*);
