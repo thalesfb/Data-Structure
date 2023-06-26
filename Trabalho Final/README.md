@@ -2,7 +2,7 @@
 
 ## Instruções Gerais
 
-Este projeto implementa uma lista encadeada dupla para a inserção, consulta, contagem de elementos por chave e remoção. Ele também inclui um método de ordenação QuickSort e hashing com encadeamento. A base de dados utilizada contém 100.788 nomes de brasileiros registrados no ano de 2018 e a função de hash escolhida foi a modular que gerou uma tabela com 53 chaves.
+Este projeto implementa uma lista encadeada dupla para a inserção, consulta, contagem de elementos por chave e remoção de uma tabela hash. Ele também inclui um método de ordenação QuickSort e hashing com encadeamento. A base de dados utilizada contém 100.788 nomes de brasileiros registrados no ano de 2018 e a função de hash modular foi a modular que gerou uma tabela com 53 chaves.
 
 ## Metodologia
 
