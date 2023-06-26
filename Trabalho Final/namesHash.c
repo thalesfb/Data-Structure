@@ -7,6 +7,7 @@ FILE* abrirArquivo(char*);
 TabelaHash* construirTabelaHash();
 void salvarTabelaHashCSV(TabelaHash*);
 void salvarQtdTabelaHashCSV(TabelaHash*);
+int numeroPrimoAleatorio();
 
 FILE* abrirArquivo(char* arquivoBusca) {
   FILE* arquivo = fopen(arquivoBusca, "r");
@@ -67,8 +68,26 @@ void salvarQtdTabelaHashCSV(TabelaHash* tabela) {
   }
   fclose(arquivo);
 }
+int numeroPrimoAleatorio() {
+  int n = rand() % 1000;
+  while (1) {
+    int primo = 1;
+    for (int i = 2; i < n; i++) {
+      if (n % i == 0) {
+        primo = 0;
+        break;
+      }
+    }
+    if (primo == 1) {
+      printf("Número primo aleatório: %d\n", n);
+      return n;
+    }
+    n++;
+  }
+}
 
 int main() {
+  char nome[100];
   printf("Trabalho Final - Tabela Hash\n");
   int m = 0;
   printf("Digite o valor de m: ");
@@ -79,5 +98,55 @@ int main() {
   TabelaHash* tabela = construirTabelaHash(arquivoBusca, m);
   salvarTabelaHashCSV(tabela);
   salvarQtdTabelaHashCSV(tabela);
-  liberaTabelaHash(tabela, m);
+  int opcao = 0;
+  printf("O que deseja fazer?\n");
+  printf("1 - Imprimir tabela hash\n");
+  printf("2 - Buscar nome\n");
+  printf("3 - Remover nome\n");
+  printf("4 - Inserir nome\n");
+  printf("5 - Escolher número primo aleatorio para M\n");
+  printf("6 - Imprimir tabela hash em arquivo CSV\n");
+  printf("0 - Sair\n");
+  printf("Opção: ");
+  scanf("%d", &opcao);
+  switch (opcao)
+  {
+  case 1:
+    printf("Imprimindo tabela hash...\n");
+    imprimeTabelaHash(tabela, m);
+    break;
+  case 2:
+    printf("Qual nome deseja buscar: ");
+    scanf("%s", nome);
+    buscaTabelaHash(tabela, nome, m);
+    break;
+  case 3:
+    printf("Qual nome deseja remover: ");
+    scanf("%s", nome);
+    removeTabelaHash(tabela, nome, m);
+    break;
+  case 4:
+    printf("Qual nome deseja inserir: ");
+    scanf("%s", nome);
+    insereTabelaHash(tabela, nome, m);
+    break;
+  case 5:
+    printf("Escolhendo número primo aleatorio para M...\n");
+    m = numeroPrimoAleatorio();
+    printf("Novo valor de M: %d\n", m);
+    break;
+  case 6:
+    printf("Imprimindo tabela hash em arquivo CSV...\n");
+    tabela = construirTabelaHash(arquivoBusca, m);
+    salvarTabelaHashCSV(tabela);
+    salvarQtdTabelaHashCSV(tabela);
+    break;
+  case 0:
+    printf("Saindo...\n");
+    liberaTabelaHash(tabela, m);
+    break;
+  default:
+    printf("Opção inválida!\n");
+    break;
+  }
 }
