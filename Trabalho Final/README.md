@@ -2,13 +2,19 @@
 
 ## Instruções Gerais
 
+<<<<<<< HEAD
+Este projeto implementa uma lista encadeada dupla para a inserção, consulta, contagem de elementos por chave e remoção. Ele também inclui um método de ordenação QuickSort e hashing com encadeamento. A base de dados utilizada contém 100.788 nomes de brasileiros registrados no ano de 2018 e a função de hash escolhida foi a modular que gerou uma tabela com 53 chaves.
+=======
 Este projeto implementa uma lista encadeada dupla para a inserção, consulta, contagem de elementos por chave e remoção de uma tabela hash. Ele também inclui um método de ordenação QuickSort e hashing com encadeamento. A base de dados utilizada contém 100.788 nomes de brasileiros e a função de hash modular gerou uma tabela com 53 chaves.
+>>>>>>> 66594da64c3be176db979c615267dba82afc95a3
 
 ## Metodologia
 
-[Descreva a metodologia que você usou para resolver o problema aqui. Certifique-se de explicar porque você fez as escolhas que fez e como você implementou as diferentes partes do projeto.]
+Foram utilizados os materiais disponibilizados pelo professor, livro TENENBAUM, Aaron M.; LANGSAM, Yedidyah; AUGENSTEIN, Moshe. Estruturas de dados usando C. São Paulo: Pearson Makron Books, 1995. xx, 884 p. ISBN 8534603480 e também pesquisas na internet.
 
 ## Tratamento de Colisão
+
+Como foi imposto pelo professor a utilização de lista duplamente encadeada, não ocorrem colisões, mas poderiamos imaginar um cenário onde se tem um limite de dados por chave em que devemos avaliar antes da inserção de novos elementos.
 
 ### Quando Deveria Ser Implementado o Tratamento de Colisão?
 
@@ -20,15 +26,15 @@ O tratamento da colisão poderia ser feito através da solução mais comum, a s
 
 ### Avaliação da Tabela Hash
 
-[Aqui você pode avaliar a tabela hash que você gerou em relação à hipótese de hashing uniforme.]
+A tabela hash gerada ficou visualmente uniforme, tendo média de 1.902 nomes por chave. Um descio padrão de 55 nomes que representa 2,89% em relação a média
 
 ## Análise de Frequência
 
-[Apresente a sua análise em relação ao histograma de frequência de cada uma das chaves da tabela hash.]
+Aproximadamente uniforme, a tabela hash gerada, se enquadra.
 
 ## Ordenação dos Elementos
 
-[Descreva como você implementou a ordenação dos elementos e por que escolheu o método QuickSort (ou qualquer outro método que você possa ter usado).]
+A ordenação, como proposto, foi utilizado o método quick sort,
 
 ## Distribuição dos Nomes
 
@@ -44,4 +50,4 @@ O tratamento da colisão poderia ser feito através da solução mais comum, a s
 
 ---
 
-Este projeto foi entregue por [seu nome] para [o propósito do projeto]. Para mais detalhes, consulte o código-fonte no [link do repositório do GitHub].
+Este projeto foi desenvolvido por Thales Ferreira para o Th. Para mais detalhes, consulte o código-fonte no [link do repositório do GitHub].
