@@ -42,7 +42,7 @@ A ordenação, como proposto, foi utilizado o método quick sort,
 
 ## Figuras e Gráficos
 
-[Inclua quaisquer figuras ou gráficos que demonstrem a resolução e os resultados obtidos.]
+![Histograma M 53](./histograma.jpg)
 
 ---
 
