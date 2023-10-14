@@ -159,6 +159,7 @@ No* insereArvore(AVL* arvore, int chave)
     printf("Árvore não existe!\n");
     return NULL;
   }
+  printf("Inserindo nó na árvore\n");
   return arvore->raiz = insere(arvore->raiz, chave);
 }
 
@@ -263,6 +264,7 @@ void remover(AVL* arvore, int chave)
     return;
   }
   arvore->raiz = removeNo(arvore->raiz, chave);
+  printf("Nó removido!\n");
 
   //verificar se a árvore ficou desbalanceada
   arvore->raiz = balancear(arvore->raiz);
@@ -289,17 +291,6 @@ No* maiorValorSubArvoreEsquerda(No* no)
   }
   return aux;
 }
-
-//função que retorna o maior valor de uma árvore binária balanceada
-/* No* maiorValor(No* no)
-{
-  No* aux = no;
-  while (aux->dir != NULL)
-  {
-    aux = aux->dir;
-  }
-  return aux;
-} */
 
 //função que realiza a rotação simples à direita
 No* RR(No* no)
@@ -342,8 +333,11 @@ int fatorBalanceamento(No* no)
 {
   if (no == NULL)
     return -1;
-  else
-    return altura(no->esq) - altura(no->dir);
+  else {
+      printf("Altura esquerda: %d\n", altura(no->esq));
+      printf("Altura direita: %d\n", altura(no->dir));
+      return altura(no->esq) - altura(no->dir);
+    }
 }
 
 //função que retorna a altura de um nó
@@ -362,6 +356,7 @@ int altura(No* no)
 {
   if (no == NULL)
     return -1;
+  printf("Altura: %d\n", no->altura);
   return no->altura;
 }
 
@@ -509,7 +504,6 @@ void testArvore() {
     imprime(arvore);
     liberaArvore(arvore); */
 }
-
 int main() {
 
   testArvore();
