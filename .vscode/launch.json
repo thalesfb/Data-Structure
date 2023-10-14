@@ -24,7 +24,11 @@
           "ignoreFailures": true
         }
       ],
-      "preLaunchTask": "C/C++: gcc.exe arquivo de build ativo"
+      "preLaunchTask": "C/C++: gcc.exe arquivo de build ativo",
+      "logging": {
+        "engineLogging": true,
+        "programOutput": true
+      }
     }
   ],
   "version": "2.0.0"
