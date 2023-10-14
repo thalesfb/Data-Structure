@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 typedef struct sNo {
   int chave;
   struct sNo* esq, * dir;
@@ -107,7 +106,7 @@ No* insereArvore(ABB* arvore, int chave) {
 
 No* busca(No* raiz, int chave) {
   if (raiz->chave == chave) {
-    printf("Chave %d encontrada/n", raiz->chave);
+    printf("Chave %d encontrada\n", raiz->chave);
     return raiz;
   }
   if (chave < raiz->chave) {
@@ -242,6 +241,7 @@ void testArvore() {
 int main() {
   int opcao, chave;
   char nome[20];
+
   do {
     menu();
     printf("O que deseja fazer?\n");
@@ -259,6 +259,8 @@ int main() {
     case 2:
       printf("Digite a chave a ser inserida: ");
       scanf("%d", &chave);
+      printf("Digite o nome da árvore que quer inserir");
+      scanf("%s", nome);
       if (arvore == NULL)
       {
         printf("Arvore nao criada!\n");
