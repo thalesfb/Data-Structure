@@ -132,6 +132,7 @@ int maiorValor(int a, int b)
 //função que insere um nó em uma árvore binária balanceada
 No* insere(No* no, int chave)
 {
+  printf("Inserindo nó com chave: %d\n", chave);
   if (no == NULL)
   {
     return criaNo(chave);
@@ -144,8 +145,10 @@ No* insere(No* no, int chave)
       no->dir = insere(no->dir, chave);
     }
   }
+  printf("Verificando altura...\n");
   no->altura = maiorValor(altura(no->esq), altura(no->dir)) + 1;
-
+  printf("Altura: %d\n", no->altura);
+  printf("Verificando balanceamento...\n");
   no = balancear(no);
 
   return no;
@@ -169,23 +172,29 @@ No* balancear(No* no)
   int fator = fatorBalanceamento(no);
   if (fator > 1)
   {
+    printf("Fator de balanceamento: %d\n", fator);
     if (fatorBalanceamento(no->esq) > 0)
     {
+      printf("Rotação RR\n");
       no = RR(no);
     }
     else
     {
+      printf("Rotação RL\n");
       no = RL(no);
     }
   }
   else if (fator < -1)
   {
+    printf("Fator de balanceamento: %d\n", fator);
     if (fatorBalanceamento(no->dir) < 0)
     {
+      printf("Rotação LL\n");
       no = LL(no);
     }
     else
     {
+      printf("Rotação LR\n");
       no = LR(no);
     }
   }
@@ -334,10 +343,10 @@ int fatorBalanceamento(No* no)
   if (no == NULL)
     return -1;
   else {
-      printf("Altura esquerda: %d\n", altura(no->esq));
-      printf("Altura direita: %d\n", altura(no->dir));
-      return altura(no->esq) - altura(no->dir);
-    }
+    printf("Altura esquerda: %d\n", altura(no->esq));
+    printf("Altura direita: %d\n", altura(no->dir));
+    return altura(no->esq) - altura(no->dir);
+  }
 }
 
 //função que retorna a altura de um nó
@@ -439,10 +448,10 @@ void testArvore() {
   insereArvore(arvore, 24);
   insereArvore(arvore, 58);
   insereArvore(arvore, 48);
-  /*  insereArvore(arvore, 26);
-    insereArvore(arvore, 11);
-    insereArvore(arvore, 13);
-    insereArvore(arvore, 14); */
+  insereArvore(arvore, 26);
+  insereArvore(arvore, 11);
+  insereArvore(arvore, 13);
+  insereArvore(arvore, 14);
 
   imprime(arvore);
   liberaArvore(arvore);
