@@ -54,7 +54,7 @@ No* alocaMemoriaNo()
     printf("Erro ao alocar memória para o nó!\n");
     exit(1);
   }
-  printf("Nó alocado!\n");
+  //printf("Nó alocado!\n");
   return novo;
 }
 
@@ -65,7 +65,7 @@ AVL* alocaMemoriaAVL() {
     printf("Erro ao alocar memoria para a arvore!\n");
     exit(1);
   }
-  printf("Árvore alocada!\n");
+  //printf("Árvore alocada!\n");
   return novo;
 }
 
@@ -77,7 +77,7 @@ void liberaNo(No* no)
     liberaNo(no->esq);
     liberaNo(no->dir);
     free(no);
-    printf("Nó liberado!\n");
+    //printf("Nó liberado!\n");
   }
 }
 
@@ -88,7 +88,7 @@ void liberaArvore(AVL* arvore)
   {
     liberaNo(arvore->raiz);
     free(arvore);
-    printf("Árvore liberada!\n");
+    //printf("Árvore liberada!\n");
   }
 }
 
@@ -105,7 +105,7 @@ No* criaNo(int chave)
   novo->esq = NULL;
   novo->dir = NULL;
   novo->altura = 0;
-  printf("Nó criado!\n");
+  //printf("Nó criado com a chave: %d\n", novo->chave);
   return novo;
 }
 
@@ -119,7 +119,7 @@ AVL* criaArvoreAVL()
     exit(1);
   }
   novo->raiz = NULL;
-  printf("Árvore criada!\n");
+  //printf("Árvore criada!\n");
   return novo;
 }
 
@@ -132,9 +132,9 @@ int maiorValor(int a, int b)
 //função que insere um nó em uma árvore binária balanceada
 No* insere(No* no, int chave)
 {
-  printf("Inserindo nó com chave: %d\n", chave);
   if (no == NULL)
   {
+    //printf("Inserindo nó com chave: %d\n", chave);
     return criaNo(chave);
   }
   else {
@@ -145,10 +145,10 @@ No* insere(No* no, int chave)
       no->dir = insere(no->dir, chave);
     }
   }
-  printf("Verificando altura...\n");
+  //printf("Verificando altura...\n");
   no->altura = maiorValor(altura(no->esq), altura(no->dir)) + 1;
-  printf("Altura: %d\n", no->altura);
-  printf("Verificando balanceamento...\n");
+  //printf("Altura: %d\n", no->altura);
+  //printf("Verificando balanceamento...\n");
   no = balancear(no);
 
   return no;
@@ -162,7 +162,7 @@ No* insereArvore(AVL* arvore, int chave)
     printf("Árvore não existe!\n");
     return NULL;
   }
-  printf("Inserindo nó na árvore\n");
+  //printf("Inserindo na árvore chave: %d\n", chave);
   return arvore->raiz = insere(arvore->raiz, chave);
 }
 
@@ -172,30 +172,30 @@ No* balancear(No* no)
   int fator = fatorBalanceamento(no);
   if (fator > 1)
   {
-    printf("Fator de balanceamento: %d\n", fator);
-    if (fatorBalanceamento(no->esq) > 0)
+    //printf("Fator de balanceamento: %d\n", fator);
+    if (fatorBalanceamento(no->esq) >= 0)
     {
-      printf("Rotação RR\n");
+      //printf("Rotação RR\n");
       no = RR(no);
     }
     else
     {
-      printf("Rotação RL\n");
-      no = RL(no);
+      //printf("Rotação LR\n");
+      no = LR(no);
     }
   }
   else if (fator < -1)
   {
-    printf("Fator de balanceamento: %d\n", fator);
-    if (fatorBalanceamento(no->dir) < 0)
+    //printf("Fator de balanceamento: %d\n", fator);
+    if (fatorBalanceamento(no->dir) <= 0)
     {
-      printf("Rotação LL\n");
+      //printf("Rotação LL\n");
       no = LL(no);
     }
     else
     {
-      printf("Rotação LR\n");
-      no = LR(no);
+      //printf("Rotação RL\n");
+      no = RL(no);
     }
   }
   return no;
@@ -211,7 +211,7 @@ No* busca(No* raiz, int chave)
   }
   if (raiz->chave == chave)
   {
-    printf("Nó encontrado!\n");
+    //printf("Nó encontrado!\n");
     return raiz;
   }
   if (chave < raiz->chave)
@@ -273,7 +273,7 @@ void remover(AVL* arvore, int chave)
     return;
   }
   arvore->raiz = removeNo(arvore->raiz, chave);
-  printf("Nó removido!\n");
+  //printf("Nó removido!\n");
 
   //verificar se a árvore ficou desbalanceada
   arvore->raiz = balancear(arvore->raiz);
@@ -304,9 +304,16 @@ No* maiorValorSubArvoreEsquerda(No* no)
 //função que realiza a rotação simples à direita
 No* RR(No* no)
 {
+  /* if (no == NULL || no->esq == NULL)
+  {
+    printf("Rotação não pode ser realizada!\n");
+    return NULL;
+  } */
   No* aux = no->esq;
-  no->esq = aux->dir;
+  No* aux2 = aux->dir;
   aux->dir = no;
+  no->esq = aux2;
+
   no->altura = maiorValor(altura(no->esq), altura(no->dir)) + 1;
   aux->altura = maiorValor(altura(aux->esq), altura(aux->dir)) + 1;
   return aux;
@@ -315,9 +322,17 @@ No* RR(No* no)
 //função que realiza a rotação simples à esquerda
 No* LL(No* no)
 {
+  /* if (no == NULL || no->dir == NULL)
+  {
+    printf("Rotação não pode ser realizada!\n");
+    return NULL;
+  } */
+
   No* aux = no->dir;
-  no->dir = aux->esq;
+  No* aux2 = aux->esq;
   aux->esq = no;
+  no->dir = aux2;
+
   no->altura = maiorValor(altura(no->esq), altura(no->dir)) + 1;
   aux->altura = maiorValor(altura(aux->esq), altura(aux->dir)) + 1;
   return aux;
@@ -326,46 +341,39 @@ No* LL(No* no)
 //função que realiza a rotação dupla à direita
 No* RL(No* no)
 {
-  no->esq = RR(no->esq);
+  /* if(no == NULL || no->esq == NULL) {
+    printf("Rotação não pode ser realizada!\n");
+    return NULL;
+  } */
+  no->dir = RR(no->dir);
   return LL(no);
 }
 
 //função que realiza a rotação dupla à esquerda
 No* LR(No* no)
 {
-  no->dir = LL(no->dir);
+  /* if(no == NULL || no->dir == NULL) {
+    printf("Rotação não pode ser realizada!\n");
+    return NULL;
+  } */
+  no->esq = LL(no->esq);
   return RR(no);
 }
 
 //função que retorna o fator de balanceamento de um nó
 int fatorBalanceamento(No* no)
 {
-  if (no == NULL)
-    return -1;
-  else {
-    printf("Altura esquerda: %d\n", altura(no->esq));
-    printf("Altura direita: %d\n", altura(no->dir));
+  if (no)
     return altura(no->esq) - altura(no->dir);
-  }
-}
-
-//função que retorna a altura de um nó
-/* int altura(No* no)
-{
-  if (no == NULL)
+  else
     return 0;
-  int altura_esq = altura(no->esq);
-  int altura_dir = altura(no->dir);
-  if (altura_esq > altura_dir)
-    return altura_esq + 1;
-  return altura_dir + 1;
-} */
+}
 
 int altura(No* no)
 {
   if (no == NULL)
     return -1;
-  printf("Altura: %d\n", no->altura);
+  //printf("Altura: %d\n", no->altura);
   return no->altura;
 }
 
@@ -379,10 +387,10 @@ void imprime(AVL* arvore)
   }
   printf("Imprimindo em ordem:\n");
   emOrdem(arvore->raiz);
-  printf("\nImprimindo em pré-ordem:\n");
-  preOrdem(arvore->raiz);
-  printf("\nImprimindo em pós-ordem:\n");
-  posOrdem(arvore->raiz);
+  //printf("\nImprimindo em pré-ordem:\n");
+  //preOrdem(arvore->raiz);
+  //printf("\nImprimindo em pós-ordem:\n");
+  //posOrdem(arvore->raiz);
   printf("\n");
 }
 
@@ -441,84 +449,117 @@ void testArvore() {
     20, 15, 25, 12, 17, 24, 30, 10, 14, 13
     20, 15, 25, 12, 17, 30, 26 */
 
-  AVL* arvore = criaArvoreAVL();
+  AVL* arvore0 = criaArvoreAVL();
 
-  insereArvore(arvore, 30);
-  insereArvore(arvore, 40);
-  insereArvore(arvore, 24);
-  insereArvore(arvore, 58);
-  insereArvore(arvore, 48);
-  insereArvore(arvore, 26);
-  insereArvore(arvore, 11);
-  insereArvore(arvore, 13);
-  insereArvore(arvore, 14);
+  insereArvore(arvore0, 30);
+  imprime(arvore0);
+  insereArvore(arvore0, 40);
+  imprime(arvore0);
+  insereArvore(arvore0, 24);
+  imprime(arvore0);
+  insereArvore(arvore0, 58);
+  imprime(arvore0);
+  insereArvore(arvore0, 48);
+  imprime(arvore0);
+  insereArvore(arvore0, 26);
+  imprime(arvore0);
+  insereArvore(arvore0, 11);
+  imprime(arvore0);
+  insereArvore(arvore0, 13);
+  imprime(arvore0);
+  insereArvore(arvore0, 14);
+  imprime(arvore0);
+  liberaArvore(arvore0);
 
-  imprime(arvore);
-  liberaArvore(arvore);
+  AVL* arvore2 = criaArvoreAVL();
 
-  /*   AVL* arvore = criaArvoreAVL();
+  insereArvore(arvore2, 20);
+  imprime(arvore2);
+  insereArvore(arvore2, 15);
+  imprime(arvore2);
+  insereArvore(arvore2, 25);
+  imprime(arvore2);
+  insereArvore(arvore2, 10);
+  imprime(arvore2);
+  insereArvore(arvore2, 30);
+  imprime(arvore2);
+  insereArvore(arvore2, 24);
+  imprime(arvore2);
+  insereArvore(arvore2, 17);
+  imprime(arvore2);
+  insereArvore(arvore2, 12);
+  imprime(arvore2);
+  insereArvore(arvore2, 5);
+  imprime(arvore2);
+  insereArvore(arvore2, 3);
 
-    insereArvore(arvore, 20);
-    insereArvore(arvore, 15);
-    insereArvore(arvore, 25);
-    insereArvore(arvore, 10);
-    insereArvore(arvore, 30);
-    insereArvore(arvore, 24);
-    insereArvore(arvore, 17);
-    insereArvore(arvore, 12);
-    insereArvore(arvore, 5);
-    insereArvore(arvore, 3);
+  imprime(arvore2);
+  liberaArvore(arvore2);
 
-    imprime(arvore);
-    liberaArvore(arvore);
+  AVL* arvore3 = criaArvoreAVL();
+  insereArvore(arvore3, 40);
+  imprime(arvore3);
+  insereArvore(arvore3, 30);
+  imprime(arvore3);
+  insereArvore(arvore3, 50);
+  imprime(arvore3);
+  insereArvore(arvore3, 45);
+  imprime(arvore3);
+  insereArvore(arvore3, 55);
+  imprime(arvore3);
+  insereArvore(arvore3, 52);
 
-    AVL* arvore = criaArvoreAVL();
+  imprime(arvore3);
+  liberaArvore(arvore3);
 
-    insereArvore(arvore, 40);
-    insereArvore(arvore, 30);
-    insereArvore(arvore, 50);
-    insereArvore(arvore, 45);
-    insereArvore(arvore, 55);
-    insereArvore(arvore, 52);
+  AVL* arvore4 = criaArvoreAVL();
+  insereArvore(arvore4, 20);
+  imprime(arvore4);
+  insereArvore(arvore4, 15);
+  imprime(arvore4);
+  insereArvore(arvore4, 25);
+  imprime(arvore4);
+  insereArvore(arvore4, 12);
+  imprime(arvore4);
+  insereArvore(arvore4, 17);
+  imprime(arvore4);
+  insereArvore(arvore4, 24);
+  imprime(arvore4);
+  insereArvore(arvore4, 30);
+  imprime(arvore4);
+  insereArvore(arvore4, 10);
+  imprime(arvore4);
+  insereArvore(arvore4, 14);
+  imprime(arvore4);
+  insereArvore(arvore4, 13);
 
-    imprime(arvore);
-    liberaArvore(arvore);
+  imprime(arvore4);
+  liberaArvore(arvore4);
 
-    AVL* arvore = criaArvoreAVL();
+  AVL* arvore5 = criaArvoreAVL();
 
-    insereArvore(arvore, 20);
-    insereArvore(arvore, 15);
-    insereArvore(arvore, 25);
-    insereArvore(arvore, 12);
-    insereArvore(arvore, 17);
-    insereArvore(arvore, 24);
-    insereArvore(arvore, 30);
-    insereArvore(arvore, 10);
-    insereArvore(arvore, 14);
-    insereArvore(arvore, 13);
+  insereArvore(arvore5, 20);
+  imprime(arvore5);
+  insereArvore(arvore5, 15);
+  imprime(arvore5);
+  insereArvore(arvore5, 25);
+  imprime(arvore5);
+  insereArvore(arvore5, 12);
+  imprime(arvore5);
+  insereArvore(arvore5, 17);
+  imprime(arvore5);
+  insereArvore(arvore5, 30);
+  imprime(arvore5);
+  insereArvore(arvore5, 26);
 
-    imprime(arvore);
-    liberaArvore(arvore);
-
-    AVL* arvore = criaArvoreAVL();
-
-    insereArvore(arvore, 20);
-    insereArvore(arvore, 15);
-    insereArvore(arvore, 25);
-    insereArvore(arvore, 12);
-    insereArvore(arvore, 17);
-    insereArvore(arvore, 30);
-    insereArvore(arvore, 26);
-
-    imprime(arvore);
-    liberaArvore(arvore); */
+  imprime(arvore5);
+  liberaArvore(arvore5);
 }
 int main() {
 
-  testArvore();
-  /*  int opcao, chave;
-
-
+  //testArvore();
+  AVL* arvore = NULL;
+  int opcao, chave;
     do {
       menu();
       printf("O que deseja fazer?\n");
@@ -529,7 +570,7 @@ int main() {
         printf("Saindo...\n");
         break;
       case 1:
-        //AVL* arvore = criaArvoreAVL();
+        arvore = criaArvoreAVL();
         break;
       case 2:
         printf("Digite a chave a ser inserida: ");
@@ -576,6 +617,6 @@ int main() {
         printf("Opcao invalida!\n");
         break;
       }
-    } while (opcao != 0); */
+    } while (opcao != 0);
   return 0;
 }
