@@ -175,12 +175,12 @@ No* balancear(No* no)
     //printf("Fator de balanceamento: %d\n", fator);
     if (fatorBalanceamento(no->esq) >= 0)
     {
-      //printf("Rotação RR\n");
+      printf("Rotação RR\n");
       no = RR(no);
     }
     else
     {
-      //printf("Rotação LR\n");
+      printf("Rotação LR\n");
       no = LR(no);
     }
   }
@@ -189,12 +189,12 @@ No* balancear(No* no)
     //printf("Fator de balanceamento: %d\n", fator);
     if (fatorBalanceamento(no->dir) <= 0)
     {
-      //printf("Rotação LL\n");
+      printf("Rotação LL\n");
       no = LL(no);
     }
     else
     {
-      //printf("Rotação RL\n");
+      printf("Rotação RL\n");
       no = RL(no);
     }
   }
@@ -257,7 +257,7 @@ No* removeNo(No* no, int chave)
       //verificar se a árvore ficou desbalanceada
       return aux;
     }
-    No* aux = menorValorSubArvoreDireita(no->dir);
+    No* aux = !menorValorSubArvoreDireita(no->dir) ? maiorValorSubArvoreEsquerda(no->esq) : menorValorSubArvoreDireita(no->dir);
     no->chave = aux->chave;
     no->dir = removeNo(no->dir, aux->chave);
   }
@@ -554,69 +554,94 @@ void testArvore() {
 
   imprime(arvore5);
   liberaArvore(arvore5);
+
+  AVL* arvore6 = criaArvoreAVL();
+
+  insereArvore(arvore6, 30);
+  insereArvore(arvore6, 25);
+  insereArvore(arvore6, 15);
+  insereArvore(arvore6, 45);
+  insereArvore(arvore6, 41);
+  insereArvore(arvore6, 35);
+  insereArvore(arvore6, 43);
+  insereArvore(arvore6, 56);
+  insereArvore(arvore6, 50);
+
+  imprime(arvore6);
+
+  insereArvore(arvore6, 49);
+  insereArvore(arvore6, 60);
+  insereArvore(arvore6, 65);
+
+  imprime(arvore6);
+
+  remover(arvore6, 45);
+  remover(arvore6, 41);
+
+  imprime(arvore6);
 }
 int main() {
 
-  //testArvore();
-  AVL* arvore = NULL;
+  testArvore();
+  AVL* arvore = criaArvoreAVL();
   int opcao, chave;
-    do {
-      menu();
-      printf("O que deseja fazer?\n");
-      printf("> ");
-      scanf("%d", &opcao);
-      switch (opcao) {
-      case 0:
-        printf("Saindo...\n");
-        break;
-      case 1:
-        arvore = criaArvoreAVL();
-        break;
-      case 2:
-        printf("Digite a chave a ser inserida: ");
-        scanf("%d", &chave);
-        if (arvore == NULL)
-        {
-          printf("Arvore nao criada!\n");
-          break;
-        }
-        insereArvore(arvore, chave);
-        break;
-      case 3:
-        printf("Digite a chave a ser removida: ");
-        scanf("%d", &chave);
-        if (arvore == NULL)
-        {
-          printf("Arvore nao criada!\n");
-          break;
-        }
-        remover(arvore, chave);
-        break;
-      case 4:
-        printf("Digite a chave a ser buscada: ");
-        scanf("%d", &chave);
-        if (arvore == NULL)
-        {
-          printf("Arvore nao criada!\n");
-          break;
-        }
-        busca(arvore->raiz, chave);
-        break;
-      case 5:
-        if (arvore == NULL)
-        {
-          printf("Arvore nao criada!\n");
-          break;
-        }
-        imprime(arvore);
-        break;
-      case 6:
-        testArvore();
-        break;
-      default:
-        printf("Opcao invalida!\n");
+  do {
+    menu();
+    printf("O que deseja fazer?\n");
+    printf("> ");
+    scanf("%d", &opcao);
+    switch (opcao) {
+    case 0:
+      printf("Saindo...\n");
+      break;
+    case 1:
+    //   arvore = criaArvoreAVL();
+      break;
+    case 2:
+      printf("Digite a chave a ser inserida: ");
+      scanf("%d", &chave);
+      if (arvore == NULL)
+      {
+        printf("Arvore nao criada!\n");
         break;
       }
-    } while (opcao != 0);
+      insereArvore(arvore, chave);
+      break;
+    case 3:
+      printf("Digite a chave a ser removida: ");
+      scanf("%d", &chave);
+      if (arvore == NULL)
+      {
+        printf("Arvore nao criada!\n");
+        break;
+      }
+      remover(arvore, chave);
+      break;
+    case 4:
+      printf("Digite a chave a ser buscada: ");
+      scanf("%d", &chave);
+      if (arvore == NULL)
+      {
+        printf("Arvore nao criada!\n");
+        break;
+      }
+      busca(arvore->raiz, chave);
+      break;
+    case 5:
+      if (arvore == NULL)
+      {
+        printf("Arvore nao criada!\n");
+        break;
+      }
+      imprime(arvore);
+      break;
+    case 6:
+      testArvore();
+      break;
+    default:
+      printf("Opcao invalida!\n");
+      break;
+    }
+  } while (opcao != 0);
   return 0;
 }
