@@ -385,10 +385,10 @@ void imprime(AVL* arvore)
     printf("Árvore não existe!\n");
     return;
   }
-  printf("Imprimindo em ordem:\n");
-  emOrdem(arvore->raiz);
-  //printf("\nImprimindo em pré-ordem:\n");
-  //preOrdem(arvore->raiz);
+  //printf("Imprimindo em ordem:\n");
+  //emOrdem(arvore->raiz);
+  printf("\nImprimindo em pré-ordem:\n");
+  preOrdem(arvore->raiz);
   //printf("\nImprimindo em pós-ordem:\n");
   //posOrdem(arvore->raiz);
   printf("\n");
@@ -583,7 +583,7 @@ void testArvore() {
 int main() {
 
   testArvore();
-  AVL* arvore = criaArvoreAVL();
+  /* AVL* arvore = criaArvoreAVL();
   int opcao, chave;
   do {
     menu();
@@ -642,6 +642,6 @@ int main() {
       printf("Opcao invalida!\n");
       break;
     }
-  } while (opcao != 0);
+  } while (opcao != 0); */
   return 0;
 }

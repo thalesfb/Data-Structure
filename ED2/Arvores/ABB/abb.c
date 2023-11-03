@@ -238,7 +238,7 @@ void testArvore() {
   liberaArvore(arvore);
 }
 
-int main() {
+/* int main() {
   int opcao, chave;
   char nome[20];
 
@@ -305,4 +305,4 @@ int main() {
     }
   } while (opcao != 0);
   return 0;
-}
+} */
