@@ -111,7 +111,7 @@ func printCodes(tree HuffmanNode) map[rune]string {
 	return codes
 }
 
-// função para salvar a codificação de Huffman em um arquivo
+// função para salvar odicionario da codificacao de Huffman em um arquivo
 func save_file(codes map[rune]string, nome_arquivo string) error {
 	// Cria o arquivo
 	arquivo, err := os.Create(nome_arquivo)
@@ -124,6 +124,33 @@ func save_file(codes map[rune]string, nome_arquivo string) error {
 	// Escreve no arquivo
 	for simbolo, codigo := range codes {
 		arquivo.WriteString(fmt.Sprintf("%c:%s\n", simbolo, codigo))
+	}
+
+	return nil
+}
+
+// função pra codificar a frase
+func codificar_frase(conteudo string, codes map[rune]string) string {
+	var frase_codificada string
+	for _, simbolo := range conteudo {
+		frase_codificada += codes[simbolo]
+	}
+	return frase_codificada
+}
+
+// função para salvar a frase codificada em um arquivo
+func save_file_codificado(codificado string, nome_arquivo string) error {
+	// Cria o arquivo
+	arquivo, err := os.Create(nome_arquivo)
+	if err != nil {
+		log.Fatal(err)
+		return err // Retorna o erro se houver algum
+	}
+	defer arquivo.Close()
+
+	// Escreve no arquivo a frase codificada em binário
+	for _, bit := range codificado {
+		arquivo.WriteString(fmt.Sprintf("%c", bit))
 	}
 
 	return nil
@@ -188,35 +215,46 @@ func count_symbol_construct_queot(conteudo string) treeHeap {
 	return trees
 }
 
-// função para calcular a taxa de compressão
+// função para calcular a taxa de compressão considerando
 func taxa_compressao(conteudo string, codes map[rune]string) float64 {
 	var tamanho_original, tamanho_comprimido int
 	for _, simbolo := range conteudo {
 		tamanho_original++
 		tamanho_comprimido += len(codes[simbolo])
 	}
-	return float64(tamanho_comprimido) / float64(tamanho_original)
+	fmt.Printf("Tamanho original: %d\n", tamanho_original * 8)
+	fmt.Printf("Tamanho comprimido: %d\n", tamanho_comprimido)
+	return float64(tamanho_comprimido) / (float64(tamanho_original) * 8)
 }
 
 // Driver program to test above functions
 func main() {
-	// caminho do arquivo
-	caminho := "G:/Meu Drive/Facul/Estrutura de dados/Data-Structure/ED2/Codificação de Huffman/arquivos/arquivo.txt"
+	// caminho do arquivo relatívo ao arquivo huffman.go subindo um diretório
+	caminho := "../arquivos/arquivo.txt"
 	conteudo, err := read_file(caminho)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	symFreqs := count_symbol_construct_queot(conteudo)
-	fmt.Println("SYMBOL\tWEIGHT\tORDER")
-	printHeap(symFreqs)
+	//fmt.Println("SYMBOL\tWEIGHT\tORDER")
+	//printHeap(symFreqs)
 	huffmanTree := buildTree(symFreqs)
 
 	//construir a codificação de Huffman
 	codes := printCodes(huffmanTree)
 
 	// salvar a codificação de Huffman em um arquivo
-	err = save_file(codes, "G:/Meu Drive/Facul/Estrutura de dados/Data-Structure/ED2/Codificação de Huffman/arquivos/codificacao.txt")
+	err = save_file(codes, "../arquivos/codificacao.txt")
+
+	// codificar a frase
+	codificado := codificar_frase(conteudo, codes)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	// salvar a frase codificada em um arquivo
+	err = save_file_codificado(codificado, "../arquivos/codificado.txt")
 
 	if err != nil {
 		log.Fatal(err)
