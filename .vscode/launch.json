@@ -1,5 +1,7 @@
-{
+/* {
   "configurations": [
+
+  
     {
       "name": "C/C++: gcc.exe Compilar e depurar o arquivo ativo",
       "type": "cppdbg",
@@ -24,12 +26,27 @@
           "ignoreFailures": true
         }
       ],
-      "preLaunchTask": "C/C++: gcc.exe arquivo de build ativo",
-      "logging": {
-        "engineLogging": true,
-        "programOutput": true
-      }
+      "preLaunchTask": "C/C++: gcc.exe arquivo de build ativo"
+      //       "logging": {
+      //  "engineLogging": true,
+      //  "programOutput": true
+      //}
     }
   ],
   "version": "2.0.0"
+}
+ */
+
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch",
+      "type": "go",
+      "request": "launch",
+      "program": "${fileDirname}",
+      "args": [],
+      "env": {}
+    }
+  ]
 }
